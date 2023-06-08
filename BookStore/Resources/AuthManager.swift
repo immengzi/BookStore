@@ -11,7 +11,7 @@ class AuthManager {
         // 创建账户
         // 插入到数据库中
 
-    func registerNewUser(username: String, password: String) -> Bool {
+    public func registerNewUser(username: String, password: String) -> Bool {
         guard dataManager.isUsernameAvailable(username: username) else {
             print("用户名不可用")
             return false
@@ -29,7 +29,7 @@ class AuthManager {
         return true
     }
 
-    func loginUser(username: String, password: String) -> Bool {
+    public func loginUser(username: String, password: String) -> Bool {
         let user = DataManager.shared.getUser(username: username, password: password)
         if user != nil {
             // 保存用户名到 UserDefaults
@@ -39,5 +39,13 @@ class AuthManager {
         } else {
           return false
         }
+    }
+    
+    public func logOut() {
+        UserManager.shared.currentUser = nil
+        
+        UserDefaults.standard.removeObject(forKey: "username")
+        
+        print("用户退出成功")
     }
 }

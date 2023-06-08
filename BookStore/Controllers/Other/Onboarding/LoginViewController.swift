@@ -97,6 +97,13 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // 获取保存的用户名
+        let username = UserDefaults.standard.string(forKey: "username")
+        // 如果保存了，则填入
+        if let username = username {
+            usernameField.text = username
+        }
+        
         loginButton.addTarget(self, action: #selector(didTapLoginButton), for: .touchUpInside)
         
         createAccountButton.addTarget(self, action: #selector(didTapCreateAccountButton), for: .touchUpInside)

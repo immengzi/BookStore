@@ -19,7 +19,7 @@ class HomeViewController: UIViewController {
         if UserManager.shared.currentUser == nil {
             let loginVC = LoginViewController()
             loginVC.modalPresentationStyle = .fullScreen
-            present(loginVC, animated: true)
+            present(loginVC, animated: false)
         }
     }
     

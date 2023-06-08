@@ -21,8 +21,6 @@
 		18C501CE2A30B4160034BCC2 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C501CD2A30B4160034BCC2 /* LoginViewController.swift */; };
 		18C501D02A30B43B0034BCC2 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C501CF2A30B43B0034BCC2 /* RegistrationViewController.swift */; };
 		18C501D22A30B47A0034BCC2 /* BookdetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C501D12A30B47A0034BCC2 /* BookdetailViewController.swift */; };
-		18C501D42A30B4980034BCC2 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C501D32A30B4980034BCC2 /* EditProfileViewController.swift */; };
-		18C501D62A30B4B00034BCC2 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C501D52A30B4B00034BCC2 /* SettingsViewController.swift */; };
 		18C501DD2A30CDB60034BCC2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C501DC2A30CDB60034BCC2 /* Extensions.swift */; };
 		18C501E72A311CED0034BCC2 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 18C501E62A311CED0034BCC2 /* libsqlite3.0.tbd */; };
 		18C501EE2A312F4F0034BCC2 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C501ED2A312F4F0034BCC2 /* DataManager.swift */; };
@@ -46,8 +44,6 @@
 		18C501CD2A30B4160034BCC2 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		18C501CF2A30B43B0034BCC2 /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
 		18C501D12A30B47A0034BCC2 /* BookdetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookdetailViewController.swift; sourceTree = "<group>"; };
-		18C501D32A30B4980034BCC2 /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
-		18C501D52A30B4B00034BCC2 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		18C501DC2A30CDB60034BCC2 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		18C501E62A311CED0034BCC2 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		18C501ED2A312F4F0034BCC2 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
@@ -168,8 +164,6 @@
 				18C501CD2A30B4160034BCC2 /* LoginViewController.swift */,
 				18C501CF2A30B43B0034BCC2 /* RegistrationViewController.swift */,
 				18C501D12A30B47A0034BCC2 /* BookdetailViewController.swift */,
-				18C501D32A30B4980034BCC2 /* EditProfileViewController.swift */,
-				18C501D52A30B4B00034BCC2 /* SettingsViewController.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -263,7 +257,6 @@
 				18C501CE2A30B4160034BCC2 /* LoginViewController.swift in Sources */,
 				18C501F02A3134120034BCC2 /* AuthManager.swift in Sources */,
 				18C501CA2A30B2E30034BCC2 /* AboutViewController.swift in Sources */,
-				18C501D62A30B4B00034BCC2 /* SettingsViewController.swift in Sources */,
 				18031DFB2A322524003A248F /* UserManager.swift in Sources */,
 				18C501D02A30B43B0034BCC2 /* RegistrationViewController.swift in Sources */,
 				18C501D22A30B47A0034BCC2 /* BookdetailViewController.swift in Sources */,
@@ -272,7 +265,6 @@
 				18C501DD2A30CDB60034BCC2 /* Extensions.swift in Sources */,
 				18B49E1D2A2FAC8100DE8136 /* AppDelegate.swift in Sources */,
 				18C501C52A30B29E0034BCC2 /* ShoppingBoxViewController.swift in Sources */,
-				18C501D42A30B4980034BCC2 /* EditProfileViewController.swift in Sources */,
 				18C501EE2A312F4F0034BCC2 /* DataManager.swift in Sources */,
 				18B49E1F2A2FAC8100DE8136 /* SceneDelegate.swift in Sources */,
 			);
