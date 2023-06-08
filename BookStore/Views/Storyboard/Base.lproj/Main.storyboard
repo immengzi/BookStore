@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="jdA-aq-7Ks">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Tab Bar Controller-->
+        <scene sceneID="Ron-iK-ART">
+            <objects>
+                <tabBarController id="jdA-aq-7Ks" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="sFt-Mr-vPp"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="pbe-d7-1ox">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="4aT-z8-vgN" kind="relationship" relationship="viewControllers" id="RZR-KC-iXh"/>
+                        <segue destination="Qyh-Hs-zLx" kind="relationship" relationship="viewControllers" id="cNm-E9-H3p"/>
+                        <segue destination="MSc-TF-96d" kind="relationship" relationship="viewControllers" id="gc0-M4-7HS"/>
+                        <segue destination="emz-F1-Fww" kind="relationship" relationship="viewControllers" id="jXv-VS-czc"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GvN-Sj-SCH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1046" y="-488"/>
+        </scene>
+        <!--关于-->
+        <scene sceneID="nmB-9m-g4i">
+            <objects>
+                <navigationController id="emz-F1-Fww" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="关于" image="gear" catalog="system" id="Y5F-ak-o0t"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="s0k-YB-Fi1">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="sY5-wJ-mNy" kind="relationship" relationship="rootViewController" id="3Gi-50-1eV"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ybA-6l-aSo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="83" y="277"/>
+        </scene>
+        <!--订单-->
+        <scene sceneID="SaB-ci-SKF">
+            <objects>
+                <navigationController id="MSc-TF-96d" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="订单" image="doc" catalog="system" id="UBG-zU-YoH"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="nDj-ha-Ary">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="BsR-Qd-Amr" kind="relationship" relationship="rootViewController" id="qdo-QX-LnY"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WQb-2e-4jQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-707" y="277"/>
+        </scene>
+        <!--购物车-->
+        <scene sceneID="jyv-BQ-ZyM">
+            <objects>
+                <navigationController id="Qyh-Hs-zLx" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="购物车" image="cart" catalog="system" id="LnG-nj-AFk"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="WKH-h0-EIM">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Ovp-xl-Gri" kind="relationship" relationship="rootViewController" id="pa9-Wy-uGb"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="l8j-3j-BCg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1478" y="277"/>
+        </scene>
+        <!--图书-->
+        <scene sceneID="YSH-0J-wp1">
+            <objects>
+                <navigationController id="4aT-z8-vgN" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="图书" image="book" catalog="system" id="qhh-NC-Miw"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="hIX-bV-x8W">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="NHI-Dz-bzx" kind="relationship" relationship="rootViewController" id="bBk-7L-E9m"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="G5w-k6-9MM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2233" y="277"/>
+        </scene>
+        <!--图书-->
+        <scene sceneID="Z8C-oo-QNu">
+            <objects>
+                <viewController id="NHI-Dz-bzx" customClass="HomeViewController" customModule="BookStore" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="j7e-0b-ogH">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="Ijb-Uf-BrU"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="图书" id="6HE-VQ-Y9M"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YHk-fY-eDu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2233.3333333333335" y="968.97321428571422"/>
+        </scene>
+        <!--购物车-->
+        <scene sceneID="Ca5-D2-Lsr">
+            <objects>
+                <viewController id="Ovp-xl-Gri" customClass="ShoppingBoxViewController" customModule="BookStore" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="vxV-1H-MdP">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="JCl-jo-033"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="购物车" id="glC-yg-4mx"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qMU-a7-jl4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1478" y="969"/>
+        </scene>
+        <!--历史订单-->
+        <scene sceneID="Y6d-C4-clS">
+            <objects>
+                <viewController id="BsR-Qd-Amr" customClass="OrdersViewController" customModule="BookStore" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="FWD-O9-B8y">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="wEg-cF-80R"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="历史订单" id="XMJ-Lw-c0x"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AvZ-h2-CpB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-707" y="969"/>
+        </scene>
+        <!--关于-->
+        <scene sceneID="jE0-23-1Vx">
+            <objects>
+                <viewController id="sY5-wJ-mNy" customClass="AboutViewController" customModule="BookStore" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="wav-FD-inh">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="aHR-9r-8ce"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="关于" id="duk-lZ-Fvn"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HY2-lI-QFX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="83" y="969"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="book" catalog="system" width="128" height="99"/>
+        <image name="cart" catalog="system" width="128" height="102"/>
+        <image name="doc" catalog="system" width="115" height="128"/>
+        <image name="gear" catalog="system" width="128" height="119"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
