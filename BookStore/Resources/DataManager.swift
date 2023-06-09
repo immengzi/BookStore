@@ -26,12 +26,12 @@ class DataManager {
 
         userTable = Table(tableName)
 
-        createTable()
+        createUserTable()
     }
 
         // MARK: - Private Methods
 
-    private func createTable() {
+    private func createUserTable() {
         do {
             try db.run(userTable.create(ifNotExists: true) { table in
                 table.column(id, primaryKey: .autoincrement)

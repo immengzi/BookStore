@@ -18,49 +18,61 @@ class AboutViewController: UIViewController {
         button.setTitle("注销", for: .normal)
         button.layer.masksToBounds = true
         button.layer.cornerRadius = Constants.cornerRadius
-        button.backgroundColor = .systemBlue
+        button.backgroundColor = .systemRed
         button.setTitleColor(.white, for: .normal)
-        
         return button
     }()
     
     private let usernameLabel : UILabel = {
         let label = UILabel()
         label.text = UserManager.shared.currentUser?.username
-        label.font = UIFont.systemFont(ofSize: 20)
-        label.textAlignment = .center
         label.textColor = .black
-        label.backgroundColor = .clear
+        label.textAlignment = .center
         return label
     }()
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
-
-        logOutButton.addTarget(self, action: #selector(didTapLogOutButton), for: .touchUpInside)
         addSubviews()
+        view.backgroundColor = .systemBackground
+        logOutButton.addTarget(self, action: #selector(didTapLogOutButton), for: .touchUpInside)
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        // assign frames
-        
-        logOutButton.frame = CGRect(
-            x: 25,
-            y: view.height - view.safeAreaInsets.bottom - 80,
-            width: view.width - 50,
-            height: 52.0
-        )
+    func addSubviews() {
+        addLabel()
+        addButton()
     }
     
-    private func addSubviews() {
+    func addLabel() {
+        usernameLabel.text = "欢迎您：" + UserManager.shared.currentUser!.username
+        usernameLabel.translatesAutoresizingMaskIntoConstraints = false // 禁用自动布局
+
+        // 添加label组件到视图中
         view.addSubview(usernameLabel)
+
+        // 设置label组件的位置和尺寸
+        NSLayoutConstraint.activate([
+//            usernameLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor), // 垂直居中
+            usernameLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
+            usernameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor), // 水平居中
+            usernameLabel.widthAnchor.constraint(equalToConstant: 200),
+            usernameLabel.heightAnchor.constraint(equalToConstant: 30)
+        ])
+    }
+    
+    func addButton() {
+        logOutButton.translatesAutoresizingMaskIntoConstraints = false // 禁用自动布局
+
+        // 添加button组件到视图中
         view.addSubview(logOutButton)
-//        view.addSubview(produceButton)
-//        view.addSubview(developerButton)
+
+        // 设置button组件的位置和尺寸
+        NSLayoutConstraint.activate([
+            logOutButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25),
+            logOutButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
+            logOutButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -80),
+            logOutButton.heightAnchor.constraint(equalToConstant: 52.0)
+        ])
     }
     
     @objc private func didTapLogOutButton() {
