@@ -5,36 +5,41 @@ import Foundation
 class DataManager {
     static let shared = DataManager()
 
+    /// DataBase
     private let dbFileName = "Bookstore.sqlite"
-    private let tableName = "User"
-
     private var db: Connection!
+    
+    /// User
+    private let userTableName = "User"
     private let userTable: Table
-    private let id = Expression<Int>("id")
+    private let userId = Expression<Int>("id")
     private let username = Expression<String>("username")
     private let password = Expression<String>("password")
 
     // MARK: - Public API
 
     private init() {
+        /// DataBase Init
         let fileURL = try! FileManager.default
             .url(for: .documentDirectory, in: .userDomainMask,
                  appropriateFor: nil, create: false)
             .appendingPathComponent(dbFileName)
-
         db = try! Connection(fileURL.path)
-
-        userTable = Table(tableName)
-
-        createUserTable()
+        
+        /// User Init
+        userTable = Table(userTableName)
+        createTable()
+        
+        /// Book Init
+        
     }
 
         // MARK: - Private Methods
 
-    private func createUserTable() {
+    private func createTable() {
         do {
             try db.run(userTable.create(ifNotExists: true) { table in
-                table.column(id, primaryKey: .autoincrement)
+                table.column(userId, primaryKey: .autoincrement)
                 table.column(username)
                 table.column(password)
             })
@@ -72,7 +77,7 @@ class DataManager {
             let query = userTable.filter(self.username == username && self.password == password)
             do {
                 let row = try db.pluck(query)
-                guard let id = row?[self.id], let username = row?[self.username], let password = row?[self.password] else {
+                guard let id = row?[self.userId], let username = row?[self.username], let password = row?[self.password] else {
                     return nil
                 }
                 print("有了！")
@@ -88,4 +93,25 @@ struct User {
     let id: Int
     let username: String
     let password: String
+}
+
+struct Book {
+    let id: Int
+    let cover_image: String
+    let title: String
+    let author: String
+    let isbn: String
+    let description: String
+    let price: Double
+}
+
+struct ShoppingCartItem {
+    let book: Book
+    let quantity: Int
+}
+
+struct OrderItem {
+    let book: Book
+    let quantity: Int
+    let price: Double
 }
