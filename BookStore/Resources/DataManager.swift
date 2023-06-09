@@ -20,11 +20,16 @@ class DataManager {
     private let bookTableName = "Book"
     private let bookTable: Table
     private let bookId = Expression<Int>("id")
+    private let bookTitle = Expression<String>("book_title")
+    private let bookAuthor = Expression<String>("book_author")
+    private let bookDescription = Expression<String>("book_description")
+    private let bookPrice = Expression<String>("book_price")
+    private let bookCoverIimage = Expression<String>("book_cover_image")
     
     /// ShoppingCart
     private let shoppingCartTableName = "ShoppingCart"
     private let shoppingCartTable: Table
-    private let shoppingCartId = Expression<Int>("id")
+    private let shoppingCartId = Expression<Int>("shoppingCartId")
     private let shoppingCartUserId = Expression<Int>("user_id")
     private let shoppingCartBookId = Expression<Int>("book_id")
     private let shoppingCartQuantity = Expression<Int>("quantity")
@@ -32,7 +37,7 @@ class DataManager {
     /// Order
     private let orderTableName = "Order"
     private let orderTable: Table
-    private let orderId = Expression<Int>("id")
+    private let orderId = Expression<Int>("orderId")
     private let orderUserId = Expression<Int>("user_id")
     private let orderBookId = Expression<Int>("book_id")
     private let orderQuantity = Expression<Int>("quantity")
@@ -82,7 +87,12 @@ class DataManager {
         /// Book
         do {
             try db.run(bookTable.create(ifNotExists: true) { table in
-                
+                table.column(bookId, primaryKey: .autoincrement)
+                table.column(bookTitle)
+                table.column(bookAuthor)
+                table.column(bookDescription)
+                table.column(bookCoverIimage)
+                table.column(bookPrice)
             })
             print("Book建表成功!")
           } catch {
@@ -91,7 +101,10 @@ class DataManager {
         /// ShoppingCart
         do {
             try db.run(shoppingCartTable.create(ifNotExists: true) { table in
-                
+                table.column(shoppingCartId, primaryKey: .autoincrement)
+                table.foreignKey(shoppingCartUserId, references: userTable, userId, delete: .cascade)
+                        table.foreignKey(shoppingCartBookId, references: bookTable, userId, delete: .cascade)
+                table.column(shoppingCartQuantity)
             })
             print("ShoppingCart建表成功!")
           } catch {
@@ -100,7 +113,11 @@ class DataManager {
         /// Order
         do {
             try db.run(orderTable.create(ifNotExists: true) { table in
-                
+                table.column(orderId, primaryKey: .autoincrement)
+                table.foreignKey(orderUserId, references: userTable, userId, delete: .cascade)
+                        table.foreignKey(orderBookId, references: bookTable, userId, delete: .cascade)
+                table.column(orderPrice)
+                table.column(orderQuantity)
             })
             print("Order建表成功!")
           } catch {
@@ -156,7 +173,7 @@ struct User {
 
 struct Book {
     let id: Int
-    let cover_image: String
+    let coverImage: String
     let title: String
     let author: String
     let description: String
