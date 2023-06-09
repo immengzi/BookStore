@@ -15,6 +15,28 @@ class DataManager {
     private let userId = Expression<Int>("id")
     private let username = Expression<String>("username")
     private let password = Expression<String>("password")
+    
+    /// Book
+    private let bookTableName = "Book"
+    private let bookTable: Table
+    private let bookId = Expression<Int>("id")
+    
+    /// ShoppingCart
+    private let shoppingCartTableName = "ShoppingCart"
+    private let shoppingCartTable: Table
+    private let shoppingCartId = Expression<Int>("id")
+    private let shoppingCartUserId = Expression<Int>("user_id")
+    private let shoppingCartBookId = Expression<Int>("book_id")
+    private let shoppingCartQuantity = Expression<Int>("quantity")
+    
+    /// Order
+    private let orderTableName = "Order"
+    private let orderTable: Table
+    private let orderId = Expression<Int>("id")
+    private let orderUserId = Expression<Int>("user_id")
+    private let orderBookId = Expression<Int>("book_id")
+    private let orderQuantity = Expression<Int>("quantity")
+    private let orderPrice = Expression<Double>("price")
 
     // MARK: - Public API
 
@@ -28,15 +50,25 @@ class DataManager {
         
         /// User Init
         userTable = Table(userTableName)
-        createTable()
+        
         
         /// Book Init
+        bookTable = Table(bookTableName)
+        
+        /// ShoppingCart Init
+        shoppingCartTable = Table(shoppingCartTableName)
+        
+        /// Order
+        orderTable = Table(orderTableName)
+        
+        createTable()
         
     }
 
         // MARK: - Private Methods
 
     private func createTable() {
+        /// User
         do {
             try db.run(userTable.create(ifNotExists: true) { table in
                 table.column(userId, primaryKey: .autoincrement)
@@ -47,6 +79,33 @@ class DataManager {
         } catch {
             print("User建表失败: \(error)")
         }
+        /// Book
+        do {
+            try db.run(bookTable.create(ifNotExists: true) { table in
+                
+            })
+            print("Book建表成功!")
+          } catch {
+            print("Book建表失败: \(error)")
+          }
+        /// ShoppingCart
+        do {
+            try db.run(shoppingCartTable.create(ifNotExists: true) { table in
+                
+            })
+            print("ShoppingCart建表成功!")
+          } catch {
+            print("ShoppingCart建表失败: \(error)")
+          }
+        /// Order
+        do {
+            try db.run(orderTable.create(ifNotExists: true) { table in
+                
+            })
+            print("Order建表成功!")
+          } catch {
+            print("Order建表失败: \(error)")
+          }
     }
 
     
@@ -100,7 +159,6 @@ struct Book {
     let cover_image: String
     let title: String
     let author: String
-    let isbn: String
     let description: String
     let price: Double
 }
