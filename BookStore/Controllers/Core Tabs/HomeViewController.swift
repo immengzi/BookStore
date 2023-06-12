@@ -12,15 +12,16 @@ class HomeViewController: UIViewController {
     }()
     
     private let categorySegmentedControl: UISegmentedControl = {
-        let segmentedControl = UISegmentedControl(items: ["Category 1", "Category 2", "Category 3"]) // 替换为您的实际分类名称
-        segmentedControl.addTarget(self, action: #selector(categoryChanged(_:)), for: .valueChanged)
-        segmentedControl.selectedSegmentIndex = 0 // 默认选中第一个分类
-        return segmentedControl
+        let categories = DataManager.shared.getAllBookCategories()
+        let categorySegmentedControl = UISegmentedControl(items: categories)
+        categorySegmentedControl.addTarget(self, action: #selector(categoryChanged(_:)), for: .valueChanged)
+        categorySegmentedControl.selectedSegmentIndex = 0 // 默认选中第一个分类
+        return categorySegmentedControl
     }()
    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.addSubview(tableView)
+//        view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
 //        // 在视图控制器加载时插入测试数据
@@ -32,11 +33,20 @@ class HomeViewController: UIViewController {
                 categorySegmentedControl.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
                 categorySegmentedControl.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
             ])
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: categorySegmentedControl.bottomAnchor, constant: 16),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        tableView.frame = view.bounds
+//        tableView.frame = view.bounds
     }
     
     
