@@ -329,8 +329,8 @@ class DataManager {
         }
     }
 
-    func addCartItem(bookId: Int, username: String, number: Int) -> Bool {
-        let insert = cartTable.insert(or: .replace, cartBookIsbn <- bookIsbn, cartUserName <- username, cartId <- number)
+    func addCartItem(bookIsbn: Int, username: String, number: Int) -> Bool {
+        let insert = cartTable.insert(or: .replace, cartBookIsbn <- bookIsbn, cartUserName <- username, cartBookNumber <- number)
         do {
             try db.run(insert)
             print("Cart item added successfully")

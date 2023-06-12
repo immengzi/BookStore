@@ -1,13 +1,13 @@
 import UIKit
 
-final class BookTableViewCell: UITableViewCell {
-    static let identifier = "BookTableViewCell"
+final class CartTableViewCell: UITableViewCell {
+    static let identifier = "CartTableViewCell"
     
     private let cellWidth: CGFloat = UIScreen.main.bounds.width - 32 // 屏幕宽度减去左右边距
     static var cellHeight: CGFloat = 100 // 设置一个默认的单元格高度
-    private var number: Int = 0
+    private var quantity: Int = 0
     
-    private var book: Book?
+    private var book: Book? // 添加一个Book属性来存储图书信息
     
     private let containerView: UIView = {
         let view = UIView()
@@ -37,13 +37,7 @@ final class BookTableViewCell: UITableViewCell {
         return label
     }()
     
-    private let numberControl: UIStepper = {
-        let stepper = UIStepper()
-        stepper.translatesAutoresizingMaskIntoConstraints = false
-        return stepper
-    }()
-    
-    private let numberLabel: UILabel = {
+    private let quantityLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 14)
@@ -51,10 +45,17 @@ final class BookTableViewCell: UITableViewCell {
         return label
     }()
     
-    private let addToCartButton: UIButton = {
+    private let totalPriceLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let selectCheckBox: UIButton = {
         let button = UIButton()
-        button.setTitle("🛒", for: .normal)
-        button.setTitleColor(.black, for: .normal)
+        button.setImage(UIImage(systemName: "checkmark.circle"), for: .selected)
+        button.setImage(UIImage(systemName: "circle"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -66,9 +67,9 @@ final class BookTableViewCell: UITableViewCell {
         containerView.addSubview(coverImageView)
         containerView.addSubview(nameLabel)
         containerView.addSubview(priceLabel)
-        containerView.addSubview(numberControl)
-        containerView.addSubview(numberLabel)
-        containerView.addSubview(addToCartButton)
+        containerView.addSubview(quantityLabel)
+        containerView.addSubview(totalPriceLabel)
+        containerView.addSubview(selectCheckBox)
         
         setupConstraints()
     }
@@ -92,7 +93,7 @@ final class BookTableViewCell: UITableViewCell {
             containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -margin),
             containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: margin),
             containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -margin),
-            containerView.heightAnchor.constraint(equalToConstant: BookTableViewCell.cellHeight),
+            containerView.heightAnchor.constraint(equalToConstant: CartTableViewCell.cellHeight),
             
             coverImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             coverImageView.topAnchor.constraint(equalTo: containerView.topAnchor),
@@ -107,55 +108,49 @@ final class BookTableViewCell: UITableViewCell {
             priceLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -margin),
             priceLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
             
-            numberControl.trailingAnchor.constraint(equalTo: addToCartButton.leadingAnchor, constant: -margin),
-            numberControl.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            numberControl.heightAnchor.constraint(equalToConstant: 30),
+            quantityLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
+            quantityLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -margin),
+            quantityLabel.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 8),
             
-            numberLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
-            numberLabel.trailingAnchor.constraint(equalTo: numberControl.leadingAnchor, constant: -margin),
-            numberLabel.centerYAnchor.constraint(equalTo: numberControl.centerYAnchor),
+            totalPriceLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
+            totalPriceLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -margin),
+            totalPriceLabel.topAnchor.constraint(equalTo: quantityLabel.bottomAnchor, constant: 8),
             
-            addToCartButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -margin),
-            addToCartButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            addToCartButton.widthAnchor.constraint(equalToConstant: 30),
-            addToCartButton.heightAnchor.constraint(equalToConstant: 30)
+            selectCheckBox.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -margin),
+            selectCheckBox.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            selectCheckBox.widthAnchor.constraint(equalToConstant: 30),
+            selectCheckBox.heightAnchor.constraint(equalToConstant: 30)
         ])
     }
     
     public func configure(with book: Book) {
-        self.book = book
         // 使用给定的图书信息配置单元格的内容
+        self.book = book
         coverImageView.image = UIImage(named: book.coverImage)
         nameLabel.text = book.name
-        priceLabel.text = "\(book.price)"+" "+"CNY"
+        priceLabel.text = "\(book.price)" + " " + "CNY"
         
         // 计算单元格的高度
         let textHeight = nameLabel.sizeThatFits(CGSize(width: nameLabel.frame.width, height: CGFloat.greatestFiniteMagnitude)).height
-        let totalHeight = textHeight + 16 + 8 + 30 // nameLabel的高度 + 上下间距 + priceLabel的上间距 + quantityControl的高度
-        BookTableViewCell.cellHeight = max(totalHeight, BookTableViewCell.cellHeight)
+        let totalHeight = textHeight + 16 + 8 + 8 + 30 // nameLabel的高度 + 上下间距 + priceLabel的上间距 + quantityLabel的上间距 + selectCheckBox的高度
+        CartTableViewCell.cellHeight = max(totalHeight, CartTableViewCell.cellHeight)
         
         // Set initial quantity
-        number = 0
-        updateNumberLabel()
+        quantity = 0
+        updateQuantityLabel()
         
-        numberControl.addTarget(self, action: #selector(quantityControlValueChanged(_:)), for: .valueChanged)
-        addToCartButton.addTarget(self, action: #selector(addToCartButtonTapped), for: .touchUpInside)
+        selectCheckBox.addTarget(self, action: #selector(selectCheckBoxTapped), for: .touchUpInside)
     }
     
-    @objc private func quantityControlValueChanged(_ sender: UIStepper) {
-        number = Int(sender.value)
-        updateNumberLabel()
+    @objc private func selectCheckBoxTapped() {
+        selectCheckBox.isSelected = !selectCheckBox.isSelected
     }
     
-    @objc private func addToCartButtonTapped() {
-        guard let book = self.book else {
-            return // 如果book为nil，则无法执行添加到购物车的操作
-        }
-        DataManager.shared.addCartItem(bookIsbn: book.isbn, username: UserManager.shared.currentUser!.username, number: number)
-    }
-    
-    private func updateNumberLabel() {
-        numberLabel.text = "数量: "+"\(number)"
-        numberControl.value = Double(number)
+    private func updateQuantityLabel() {
+        guard let book = book else { return }
+        
+        quantityLabel.text = "数量: " + "\(quantity)"
+        let totalPrice = book.price * Double(quantity)
+        totalPriceLabel.text = "总价: " + "\(totalPrice)" + " CNY"
     }
 }
