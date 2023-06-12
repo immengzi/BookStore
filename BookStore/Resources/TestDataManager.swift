@@ -20,12 +20,11 @@ class TestDataManager {
     // 在这里添加测试特定的方法和属性
     
     func insertTestData() {
-        // 在这里调用适当的方法来插入测试数据
+        // 在这里调用适当的方法来测试数据
         // 例如，调用dataManager中的方法来插入测试图书
-//        let book1 = Book(id: 1, name: "Book 1", price: 9.99, type: "Fiction", author: "Author 1", description: "Description 1", coverImagePath: "cover_image_1.jpg")
-//        let book2 = Book(id: 2, name: "Book 2", price: 14.99, type: "Non-fiction", author: "Author 2", description: "Description 2", coverImagePath: "cover_image_2.jpg")
+        
+//        let book1 = Book(name: "计算机网络", price: 45, type: "网络", author: "谢希仁", description: "本书分为10章, 比较全面系统地介绍了计算机网络的发展和原理体系结构, 物理层, 数据链路层, 网络层, 运输层, 应用层, 网络安全, 因特网上的音频/视频服务, 无线网络和下一代因特网等内容。", coverImagePath: "book1")
 //
 //        dataManager.insertBook(name: book1.name, price: book1.price, type: book1.type, author: book1.author, description: book1.description, coverImagePath: book1.coverImagePath)
-//        dataManager.insertBook(name: book2.name, price: book2.price, type: book2.type, author: book2.author, description: book2.description, coverImagePath: book2.coverImagePath)
     }
 }

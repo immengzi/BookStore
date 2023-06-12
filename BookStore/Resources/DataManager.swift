@@ -12,6 +12,7 @@ class DataManager {
     /// User
     private let userTableName = "user"
     private let userTable: Table
+    private let userId = Expression<Int>("id")
     private let username = Expression<String>("username")
     private let password = Expression<String>("password")
 
@@ -24,13 +25,15 @@ class DataManager {
     private let bookType = Expression<String>("type")
     private let bookAuthor = Expression<String>("author")
     private let bookDescription = Expression<String>("description")
-    private let bookCoverImagePath = Expression<String>("coverimage_path")
+    private let bookCoverImage = Expression<String>("coverImage")
+    private let bookIsbn = Expression<Int>("isbn")
 
     /// Cart
     private let cartTableName = "cart"
     private let cartTable: Table
     private let cartId = Expression<Int>("id")
-    private let cartBookId = Expression<Int>("book_id")
+    private let cartBookIsbn = Expression<Int>("book_isbn")
+    private let cartBookNumber = Expression<Int>("number")
     private let cartUserName = Expression<String>("user_name")
 
     /// Order
@@ -64,9 +67,9 @@ class DataManager {
         /// Order
         orderTable = Table(orderTableName)
 
-//        resetDatabase()
-        
         createTable()
+        
+//        resetDatabase()
     }
 
     func resetDatabase() {
@@ -87,11 +90,7 @@ class DataManager {
 
         // 重新打开数据库连接
         db = try! Connection(fileURL.path)
-
-        // 重新创建表格
-        createTable()
     }
-    
     
     // MARK: - Private Methods
 
@@ -99,7 +98,8 @@ class DataManager {
         /// User
         do {
             try db.run(userTable.create(ifNotExists: true) { table in
-                table.column(username, primaryKey: true)
+                table.column(userId, primaryKey: .autoincrement)
+                table.column(username, unique: true)
                 table.column(password)
             })
             print("User建表成功！")
@@ -109,13 +109,14 @@ class DataManager {
         /// Book
         do {
             try db.run(bookTable.create(ifNotExists: true) { table in
-                table.column(bookId, primaryKey: true)
+                table.column(bookId, primaryKey: .autoincrement)
                 table.column(bookName)
                 table.column(bookPrice)
                 table.column(bookType)
                 table.column(bookAuthor)
                 table.column(bookDescription)
-                table.column(bookCoverImagePath)
+                table.column(bookIsbn, unique: true)
+                table.column(bookCoverImage)
             })
             print("Book建表成功!")
         } catch {
@@ -124,10 +125,11 @@ class DataManager {
         /// Cart
         do {
             try db.run(cartTable.create(ifNotExists: true) { table in
-                table.column(cartId, primaryKey: true)
-                table.column(cartBookId)
+                table.column(cartId, primaryKey: .autoincrement)
+                table.column(cartBookIsbn)
+                table.column(cartBookNumber)
                 table.column(cartUserName)
-                table.foreignKey(cartBookId, references: bookTable, bookId, delete: .cascade)
+                table.foreignKey(cartBookIsbn, references: bookTable, bookId, delete: .cascade)
                 table.foreignKey(cartUserName, references: userTable, username, delete: .cascade)
             })
             print("Cart建表成功!")
@@ -137,7 +139,7 @@ class DataManager {
         /// Order
         do {
             try db.run(orderTable.create(ifNotExists: true) { table in
-                table.column(orderId, primaryKey: true)
+                table.column(orderId, primaryKey: .autoincrement)
                 table.column(orderUserName)
                 table.column(orderPrice)
                 table.column(orderItemJSON)
@@ -201,8 +203,8 @@ class DataManager {
         }
     }
     
-    func insertBook(name: String, price: Double, type: String, author: String, description: String, coverImagePath: String) -> Bool {
-        let insert = bookTable.insert(bookName <- name, bookPrice <- price, bookType <- type, bookAuthor <- author, bookDescription <- description, bookCoverImagePath <- coverImagePath)
+    func insertBook(name: String, price: Double, type: String, author: String, description: String, isbn: Int, coverImage: String) -> Bool {
+        let insert = bookTable.insert(bookName <- name, bookPrice <- price, bookType <- type, bookAuthor <- author, bookDescription <- description, bookIsbn <- isbn, bookCoverImage <- coverImage)
         do {
             try db.run(insert)
             print("成功插入一本图书！")
@@ -212,6 +214,7 @@ class DataManager {
             return false
         }
     }
+    
     func getAllBookCategories() -> [String] {
         let query = bookTable.select(distinct: bookType)
         do {
@@ -231,13 +234,13 @@ class DataManager {
             let rows = try db.prepare(query)
             return rows.map { row in
                 return Book(
-                    id: row[bookId],
                     name: row[bookName],
                     price: row[bookPrice],
                     type: row[bookType],
                     author: row[bookAuthor],
                     description: row[bookDescription],
-                    coverImagePath: row[bookCoverImagePath]
+                    isbn: row[bookIsbn],
+                    coverImage: row[bookCoverImage]
                 )
             }
         } catch {
@@ -252,13 +255,13 @@ class DataManager {
             let rows = try db.prepare(query)
             return rows.map { row in
                 return Book(
-                    id: row[bookId],
                     name: row[bookName],
                     price: row[bookPrice],
                     type: row[bookType],
                     author: row[bookAuthor],
                     description: row[bookDescription],
-                    coverImagePath: row[bookCoverImagePath]
+                    isbn: row[bookIsbn],
+                    coverImage: row[bookCoverImage]
                 )
             }
         } catch {
@@ -274,13 +277,13 @@ class DataManager {
             let rows = try db.prepare(query)
             return rows.map { row in
                 return Book(
-                    id: row[bookId],
                     name: row[bookName],
                     price: row[bookPrice],
                     type: row[bookType],
                     author: row[bookAuthor],
                     description: row[bookDescription],
-                    coverImagePath: row[bookCoverImagePath]
+                    isbn: row[bookIsbn],
+                    coverImage: row[bookCoverImage]
                 )
             }
         } catch {
@@ -303,22 +306,22 @@ class DataManager {
     }
 
     func getCartItems(forUsername username: String) -> [CartItem] {
-        let query = cartTable.join(bookTable, on: cartBookId == bookId)
+        let query = cartTable.join(bookTable, on: cartBookIsbn == bookIsbn)
                                .filter(cartUserName == username)
         do {
             let rows = try db.prepare(query)
             return rows.map { row in
                 let book = Book(
-                    id: row[bookId],
                     name: row[bookName],
                     price: row[bookPrice],
                     type: row[bookType],
                     author: row[bookAuthor],
                     description: row[bookDescription],
-                    coverImagePath: row[bookCoverImagePath]
+                    isbn: row[bookIsbn],
+                    coverImage: row[bookCoverImage]
                 )
-                let quantity = row[cartId]
-                return CartItem(book: book, quantity: quantity)
+                let number = row[cartId]
+                return CartItem(book: book, number: number)
             }
         } catch {
             print("Failed to retrieve cart items: \(error)")
@@ -326,8 +329,8 @@ class DataManager {
         }
     }
 
-    func addCartItem(bookId: Int, username: String, quantity: Int) -> Bool {
-        let insert = cartTable.insert(or: .replace, cartBookId <- bookId, cartUserName <- username, cartId <- quantity)
+    func addCartItem(bookId: Int, username: String, number: Int) -> Bool {
+        let insert = cartTable.insert(or: .replace, cartBookIsbn <- bookIsbn, cartUserName <- username, cartId <- number)
         do {
             try db.run(insert)
             print("Cart item added successfully")
@@ -338,8 +341,8 @@ class DataManager {
         }
     }
 
-    func removeCartItem(bookId: Int, username: String) -> Bool {
-        let query = cartTable.filter(cartBookId == bookId && cartUserName == username)
+    func removeCartItem(bookIsbn: Int, username: String) -> Bool {
+        let query = cartTable.filter(cartBookIsbn == bookIsbn && cartUserName == username)
         let delete = query.delete()
         do {
             try db.run(delete)
@@ -382,17 +385,17 @@ class DataManager {
             let rows = try db.prepare(query)
             return rows.map { row in
                 let book = Book(
-                    id: row[bookId],
                     name: row[bookName],
                     price: row[bookPrice],
                     type: row[bookType],
                     author: row[bookAuthor],
                     description: row[bookDescription],
-                    coverImagePath: row[bookCoverImagePath]
+                    isbn: row[bookIsbn],
+                    coverImage: row[bookCoverImage]
                 )
-                let quantity = row[cartId]
+                let number = row[cartId]
                 let price = row[orderPrice]
-                return OrderItem(book: book, quantity: quantity, price: price)
+                return OrderItem(book: book, number: number, price: price)
             }
         } catch {
             print("Failed to retrieve orders: \(error)")
@@ -407,22 +410,22 @@ struct User {
 }
 
 struct Book {
-    let id: Int
     let name: String
     let price: Double
     let type: String
     let author: String
     let description: String
-    let coverImagePath: String
+    let isbn: Int
+    let coverImage: String
 }
 
 struct CartItem {
     let book: Book
-    let quantity: Int
+    let number: Int
 }
 
 struct OrderItem {
     let book: Book
-    let quantity: Int
+    let number: Int
     let price: Double
 }

@@ -7,24 +7,21 @@ final class BookTableViewCell: UITableViewCell {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
-        // 设置封面图标的布局约束
-        // ...
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
 
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
-        // 设置书名的布局约束
-        // ...
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
     private let priceLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
-        // 设置价格的布局约束
-        // ...
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
@@ -34,23 +31,44 @@ final class BookTableViewCell: UITableViewCell {
         contentView.addSubview(coverImageView)
         contentView.addSubview(nameLabel)
         contentView.addSubview(priceLabel)
+        
+        setupConstraints()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        coverImageView.image = nil
+        nameLabel.text = nil
+        priceLabel.text = nil
+    }
 
-        coverImageView.frame = CGRect(x: 16, y: 8, width: 80, height: 120)
-        nameLabel.frame = CGRect(x: coverImageView.frame.maxX + 16, y: 8, width: contentView.bounds.width - coverImageView.frame.maxX - 16 - 16, height: 20)
-        priceLabel.frame = CGRect(x: coverImageView.frame.maxX + 16, y: nameLabel.frame.maxY + 8, width: contentView.bounds.width - coverImageView.frame.maxX - 16 - 16, height: 20)
+    private func setupConstraints() {
+        let margin: CGFloat = 16
+        
+        NSLayoutConstraint.activate([
+            coverImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: margin),
+            coverImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: margin),
+            coverImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -margin),
+            coverImageView.widthAnchor.constraint(equalToConstant: 80),
+
+            nameLabel.leadingAnchor.constraint(equalTo: coverImageView.trailingAnchor, constant: margin),
+            nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -margin),
+            nameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: margin),
+            
+            priceLabel.leadingAnchor.constraint(equalTo: coverImageView.trailingAnchor, constant: margin),
+            priceLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -margin),
+            priceLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
+            priceLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -margin)
+        ])
     }
 
     public func configure(with book: Book) {
         // 使用给定的图书信息配置单元格的内容
-        coverImageView.image = UIImage(named: book.coverImagePath)
+        coverImageView.image = UIImage(named: book.coverImage)
         nameLabel.text = book.name
         priceLabel.text = "\(book.price)"
     }
