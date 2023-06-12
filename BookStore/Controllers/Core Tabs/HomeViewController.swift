@@ -3,7 +3,7 @@ import SQLite3
 
 class HomeViewController: UIViewController {
     
-    private var selectedCategory: String = ""
+    private var selectedCategory: String = DataManager.shared.getAllBookCategories().first ?? ""
     
     private let tableView : UITableView = {
         let tableView = UITableView()
@@ -21,11 +21,10 @@ class HomeViewController: UIViewController {
    
     override func viewDidLoad() {
         super.viewDidLoad()
-//        view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
-//        // 在视图控制器加载时插入测试数据
-//        TestDataManager.shared.insertTestData()
+        // 在视图控制器加载时插入测试数据
+        TestDataManager.shared.insertTestData()
         view.addSubview(categorySegmentedControl)
             categorySegmentedControl.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
@@ -46,7 +45,7 @@ class HomeViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-//        tableView.frame = view.bounds
+        
     }
     
     
@@ -55,6 +54,7 @@ class HomeViewController: UIViewController {
         
         // 处理用户的登录状态
         handleNotAuthenticated()
+        tableView.reloadData()
     }
     
     private func handleNotAuthenticated() {
