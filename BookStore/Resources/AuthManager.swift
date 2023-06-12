@@ -22,8 +22,6 @@ class AuthManager {
             return false
         }
         UserManager.shared.currentUser = user
-        dataManager.getUser(username: username, password: password)
-        print(dataManager.getUser(username: username, password: password))
         print("账户注册成功")
         
         return true

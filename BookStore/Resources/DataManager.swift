@@ -160,6 +160,206 @@ class DataManager {
             return nil
         }
     }
+    
+    func deleteUser(username: String) -> Bool {
+        let query = userTable.filter(self.username == username)
+        let delete = query.delete()
+        do {
+            try db.run(delete)
+            print("User deleted successfully")
+            return true
+        } catch {
+            print("Failed to delete user: \(error)")
+            return false
+        }
+    }
+    
+    func insertBook(name: String, price: Double, type: String, author: String, description: String, coverImagePath: String) -> Bool {
+        let insert = bookTable.insert(bookName <- name, bookPrice <- price, bookType <- type, bookAuthor <- author, bookDescription <- description, bookCoverImagePath <- coverImagePath)
+        do {
+            try db.run(insert)
+            print("Book inserted successfully")
+            return true
+        } catch {
+            print("Failed to insert book: \(error)")
+            return false
+        }
+    }
+    
+    func getAllBooksOrderedByType() -> [Book] {
+        let query = bookTable.order(bookType.asc)
+        do {
+            let rows = try db.prepare(query)
+            return rows.map { row in
+                return Book(
+                    id: row[bookId],
+                    name: row[bookName],
+                    price: row[bookPrice],
+                    type: row[bookType],
+                    author: row[bookAuthor],
+                    description: row[bookDescription],
+                    coverImagePath: row[bookCoverImagePath]
+                )
+            }
+        } catch {
+            print("Failed to retrieve books: \(error)")
+            return []
+        }
+    }
+
+    func getBooksOrderedByName(ofType type: String) -> [Book] {
+        let query = bookTable.filter(bookType == type).order(bookName.asc)
+        do {
+            let rows = try db.prepare(query)
+            return rows.map { row in
+                return Book(
+                    id: row[bookId],
+                    name: row[bookName],
+                    price: row[bookPrice],
+                    type: row[bookType],
+                    author: row[bookAuthor],
+                    description: row[bookDescription],
+                    coverImagePath: row[bookCoverImagePath]
+                )
+            }
+        } catch {
+            print("Failed to retrieve books: \(error)")
+            return []
+        }
+    }
+
+    func searchBooksByName(query: String) -> [Book] {
+        let searchQuery = "%" + query + "%"
+        let query = bookTable.filter(bookName.like(searchQuery, escape: "\\")).order(bookName.asc)
+        do {
+            let rows = try db.prepare(query)
+            return rows.map { row in
+                return Book(
+                    id: row[bookId],
+                    name: row[bookName],
+                    price: row[bookPrice],
+                    type: row[bookType],
+                    author: row[bookAuthor],
+                    description: row[bookDescription],
+                    coverImagePath: row[bookCoverImagePath]
+                )
+            }
+        } catch {
+            print("Failed to retrieve books: \(error)")
+            return []
+        }
+    }
+
+    func deleteBook(withId id: Int) -> Bool {
+        let query = bookTable.filter(bookId == id)
+        let delete = query.delete()
+        do {
+            try db.run(delete)
+            print("Book deleted successfully")
+            return true
+        } catch {
+            print("Failed to delete book: \(error)")
+            return false
+        }
+    }
+
+    func getCartItems(forUsername username: String) -> [CartItem] {
+        let query = cartTable.join(bookTable, on: cartBookId == bookId)
+                               .filter(cartUserName == username)
+        do {
+            let rows = try db.prepare(query)
+            return rows.map { row in
+                let book = Book(
+                    id: row[bookId],
+                    name: row[bookName],
+                    price: row[bookPrice],
+                    type: row[bookType],
+                    author: row[bookAuthor],
+                    description: row[bookDescription],
+                    coverImagePath: row[bookCoverImagePath]
+                )
+                let quantity = row[cartId]
+                return CartItem(book: book, quantity: quantity)
+            }
+        } catch {
+            print("Failed to retrieve cart items: \(error)")
+            return []
+        }
+    }
+
+    func addCartItem(bookId: Int, username: String, quantity: Int) -> Bool {
+        let insert = cartTable.insert(or: .replace, cartBookId <- bookId, cartUserName <- username, cartId <- quantity)
+        do {
+            try db.run(insert)
+            print("Cart item added successfully")
+            return true
+        } catch {
+            print("Failed to add cart item: \(error)")
+            return false
+        }
+    }
+
+    func removeCartItem(bookId: Int, username: String) -> Bool {
+        let query = cartTable.filter(cartBookId == bookId && cartUserName == username)
+        let delete = query.delete()
+        do {
+            try db.run(delete)
+            print("Cart item removed successfully")
+            return true
+        } catch {
+            print("Failed to remove cart item: \(error)")
+            return false
+        }
+    }
+
+    func clearCartItems(forUsername username: String) -> Bool {
+        let query = cartTable.filter(cartUserName == username)
+        let delete = query.delete()
+        do {
+            try db.run(delete)
+            print("Cart items cleared successfully")
+            return true
+        } catch {
+            print("Failed to clear cart items: \(error)")
+            return false
+        }
+    }
+
+    func placeOrder(username: String, price: Double, itemJSON: String) -> Bool {
+        let insert = orderTable.insert(orderUserName <- username, orderPrice <- price, orderItemJSON <- itemJSON, orderCreateTime <- Date())
+        do {
+            try db.run(insert)
+            print("Order placed successfully")
+            return true
+        } catch {
+            print("Failed to place order: \(error)")
+            return false
+        }
+    }
+
+    func getOrders(forUsername username: String) -> [OrderItem] {
+        let query = orderTable.filter(orderUserName == username).order(orderCreateTime.desc)
+        do {
+            let rows = try db.prepare(query)
+            return rows.map { row in
+                let book = Book(
+                    id: row[bookId],
+                    name: row[bookName],
+                    price: row[bookPrice],
+                    type: row[bookType],
+                    author: row[bookAuthor],
+                    description: row[bookDescription],
+                    coverImagePath: row[bookCoverImagePath]
+                )
+                let quantity = row[cartId]
+                let price = row[orderPrice]
+                return OrderItem(book: book, quantity: quantity, price: price)
+            }
+        } catch {
+            print("Failed to retrieve orders: \(error)")
+            return []
+        }
+    }
 }
 
 struct User {

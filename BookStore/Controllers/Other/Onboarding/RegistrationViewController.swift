@@ -95,9 +95,7 @@ class RegistrationViewController: UIViewController {
         let isRegisterSuccess = AuthManager.shared.registerNewUser(username: username, password: password)
         if isRegisterSuccess {
             print("注册成功")
-            let loginVC = LoginViewController()
-            loginVC.modalPresentationStyle = .fullScreen
-            present(loginVC, animated: false)
+            dismiss(animated: true, completion: nil)
         } else {
             print("注册失败")
             let alert = UIAlertController(title: "注册失败", message: "很不幸，你注册失败了", preferredStyle: .alert)
