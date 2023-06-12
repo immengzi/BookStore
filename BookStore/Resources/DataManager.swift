@@ -1,47 +1,45 @@
 import SQLite
 import Foundation
 
-
 class DataManager {
     static let shared = DataManager()
 
     /// DataBase
     private let dbFileName = "Bookstore.sqlite"
     private var db: Connection!
-    
+
     /// User
-    private let userTableName = "User"
+    private let userTableName = "user"
     private let userTable: Table
-    private let userId = Expression<Int>("id")
     private let username = Expression<String>("username")
     private let password = Expression<String>("password")
-    
+
     /// Book
-    private let bookTableName = "Book"
+    private let bookTableName = "book"
     private let bookTable: Table
     private let bookId = Expression<Int>("id")
-    private let bookTitle = Expression<String>("book_title")
-    private let bookAuthor = Expression<String>("book_author")
-    private let bookDescription = Expression<String>("book_description")
-    private let bookPrice = Expression<String>("book_price")
-    private let bookCoverIimage = Expression<String>("book_cover_image")
-    
-    /// ShoppingCart
-    private let shoppingCartTableName = "ShoppingCart"
-    private let shoppingCartTable: Table
-    private let shoppingCartId = Expression<Int>("shoppingCartId")
-    private let shoppingCartUserId = Expression<Int>("user_id")
-    private let shoppingCartBookId = Expression<Int>("book_id")
-    private let shoppingCartQuantity = Expression<Int>("quantity")
-    
+    private let bookName = Expression<String>("name")
+    private let bookPrice = Expression<Double>("price")
+    private let bookType = Expression<String>("type")
+    private let bookAuthor = Expression<String>("author")
+    private let bookDescription = Expression<String>("description")
+    private let bookCoverImagePath = Expression<String>("coverimage_path")
+
+    /// Cart
+    private let cartTableName = "cart"
+    private let cartTable: Table
+    private let cartId = Expression<Int>("id")
+    private let cartBookId = Expression<Int>("book_id")
+    private let cartUserName = Expression<String>("user_name")
+
     /// Order
-    private let orderTableName = "Order"
+    private let orderTableName = "order"
     private let orderTable: Table
-    private let orderId = Expression<Int>("orderId")
-    private let orderUserId = Expression<Int>("user_id")
-    private let orderBookId = Expression<Int>("book_id")
-    private let orderQuantity = Expression<Int>("quantity")
+    private let orderId = Expression<Int>("id")
+    private let orderUserName = Expression<String>("user_name")
     private let orderPrice = Expression<Double>("price")
+    private let orderItemJSON = Expression<String>("item_json")
+    private let orderCreateTime = Expression<Date>("create_time")
 
     // MARK: - Public API
 
@@ -52,32 +50,29 @@ class DataManager {
                  appropriateFor: nil, create: false)
             .appendingPathComponent(dbFileName)
         db = try! Connection(fileURL.path)
-        
+
         /// User Init
         userTable = Table(userTableName)
-        
-        
+
         /// Book Init
         bookTable = Table(bookTableName)
-        
-        /// ShoppingCart Init
-        shoppingCartTable = Table(shoppingCartTableName)
-        
+
+        /// Cart Init
+        cartTable = Table(cartTableName)
+
         /// Order
         orderTable = Table(orderTableName)
-        
+
         createTable()
-        
     }
 
-        // MARK: - Private Methods
+    // MARK: - Private Methods
 
     private func createTable() {
         /// User
         do {
             try db.run(userTable.create(ifNotExists: true) { table in
-                table.column(userId, primaryKey: .autoincrement)
-                table.column(username)
+                table.column(username, primaryKey: true)
                 table.column(password)
             })
             print("User建表成功！")
@@ -87,45 +82,47 @@ class DataManager {
         /// Book
         do {
             try db.run(bookTable.create(ifNotExists: true) { table in
-                table.column(bookId, primaryKey: .autoincrement)
-                table.column(bookTitle)
+                table.column(bookId, primaryKey: true)
+                table.column(bookName)
+                table.column(bookPrice)
+                table.column(bookType)
                 table.column(bookAuthor)
                 table.column(bookDescription)
-                table.column(bookCoverIimage)
-                table.column(bookPrice)
+                table.column(bookCoverImagePath)
             })
             print("Book建表成功!")
-          } catch {
+        } catch {
             print("Book建表失败: \(error)")
-          }
-        /// ShoppingCart
+        }
+        /// Cart
         do {
-            try db.run(shoppingCartTable.create(ifNotExists: true) { table in
-                table.column(shoppingCartId, primaryKey: .autoincrement)
-                table.foreignKey(shoppingCartUserId, references: userTable, userId, delete: .cascade)
-                        table.foreignKey(shoppingCartBookId, references: bookTable, userId, delete: .cascade)
-                table.column(shoppingCartQuantity)
+            try db.run(cartTable.create(ifNotExists: true) { table in
+                table.column(cartId, primaryKey: true)
+                table.column(cartBookId)
+                table.column(cartUserName)
+                table.foreignKey(cartBookId, references: bookTable, bookId, delete: .cascade)
+                table.foreignKey(cartUserName, references: userTable, username, delete: .cascade)
             })
-            print("ShoppingCart建表成功!")
-          } catch {
-            print("ShoppingCart建表失败: \(error)")
-          }
+            print("Cart建表成功!")
+        } catch {
+            print("Cart建表失败: \(error)")
+        }
         /// Order
         do {
             try db.run(orderTable.create(ifNotExists: true) { table in
-                table.column(orderId, primaryKey: .autoincrement)
-                table.foreignKey(orderUserId, references: userTable, userId, delete: .cascade)
-                        table.foreignKey(orderBookId, references: bookTable, userId, delete: .cascade)
+                table.column(orderId, primaryKey: true)
+                table.column(orderUserName)
                 table.column(orderPrice)
-                table.column(orderQuantity)
+                table.column(orderItemJSON)
+                table.column(orderCreateTime)
+                table.foreignKey(orderUserName, references: userTable, username, delete: .cascade)
             })
             print("Order建表成功!")
-          } catch {
+        } catch {
             print("Order建表失败: \(error)")
-          }
+        }
     }
 
-    
     func isUsernameAvailable(username: String) -> Bool {
         let query = userTable.filter(self.username == username)
         do {
@@ -136,51 +133,51 @@ class DataManager {
             return false
         }
     }
-    
+
     func createUser(username: String, password: String) -> User? {
         let insert = userTable.insert(self.username <- username, self.password <- password)
         do {
             let rowid = try db.run(insert)
             print("User created with rowid: \(rowid)")
-            return User(id: Int(rowid), username: username, password: password)
+            return User(username: username, password: password)
         } catch {
             print("Failed to create user: \(error)")
             return nil
         }
     }
-    
+
     func getUser(username: String, password: String) -> User? {
-            let query = userTable.filter(self.username == username && self.password == password)
-            do {
-                let row = try db.pluck(query)
-                guard let id = row?[self.userId], let username = row?[self.username], let password = row?[self.password] else {
-                    return nil
-                }
-                print("有了！")
-                return User(id: id, username: username, password: password)
-            } catch {
-                print("Failed to get user: \(error)")
+        let query = userTable.filter(self.username == username && self.password == password)
+        do {
+            let row = try db.pluck(query)
+            guard let username = row?[self.username], let password = row?[self.password] else {
                 return nil
             }
+            print("DB层成功获取用户信息")
+            return User(username: username, password: password)
+        } catch {
+            print("Failed to get user: \(error)")
+            return nil
         }
+    }
 }
 
 struct User {
-    let id: Int
     let username: String
     let password: String
 }
 
 struct Book {
     let id: Int
-    let coverImage: String
-    let title: String
+    let name: String
+    let price: Double
+    let type: String
     let author: String
     let description: String
-    let price: Double
+    let coverImagePath: String
 }
 
-struct ShoppingCartItem {
+struct CartItem {
     let book: Book
     let quantity: Int
 }
