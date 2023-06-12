@@ -42,8 +42,10 @@ final class BookTableViewCell: UITableViewCell {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        // 设置子视图的布局约束
-        // ...
+
+        coverImageView.frame = CGRect(x: 16, y: 8, width: 80, height: 120)
+        nameLabel.frame = CGRect(x: coverImageView.frame.maxX + 16, y: 8, width: contentView.bounds.width - coverImageView.frame.maxX - 16 - 16, height: 20)
+        priceLabel.frame = CGRect(x: coverImageView.frame.maxX + 16, y: nameLabel.frame.maxY + 8, width: contentView.bounds.width - coverImageView.frame.maxX - 16 - 16, height: 20)
     }
 
     public func configure(with book: Book) {

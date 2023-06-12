@@ -1,4 +1,5 @@
 import SQLite
+import SQLite3
 import Foundation
 
 class DataManager {
@@ -63,9 +64,35 @@ class DataManager {
         /// Order
         orderTable = Table(orderTableName)
 
+//        resetDatabase()
+        
         createTable()
     }
 
+    func resetDatabase() {
+        // 断开数据库连接
+        db = nil
+
+        // 删除数据库文件
+        let fileURL = try! FileManager.default
+            .url(for: .documentDirectory, in: .userDomainMask,
+                 appropriateFor: nil, create: false)
+            .appendingPathComponent(dbFileName)
+        do {
+            try FileManager.default.removeItem(at: fileURL)
+            print("数据库文件删除成功")
+        } catch {
+            print("数据库文件删除失败: \(error)")
+        }
+
+        // 重新打开数据库连接
+        db = try! Connection(fileURL.path)
+
+        // 重新创建表格
+        createTable()
+    }
+    
+    
     // MARK: - Private Methods
 
     private func createTable() {
@@ -178,16 +205,28 @@ class DataManager {
         let insert = bookTable.insert(bookName <- name, bookPrice <- price, bookType <- type, bookAuthor <- author, bookDescription <- description, bookCoverImagePath <- coverImagePath)
         do {
             try db.run(insert)
-            print("Book inserted successfully")
+            print("成功插入一本图书！")
             return true
         } catch {
-            print("Failed to insert book: \(error)")
+            print("插入图书失败: \(error)")
             return false
         }
     }
-    
-    func getAllBooksOrderedByType() -> [Book] {
-        let query = bookTable.order(bookType.asc)
+    func getAllBookCategories() -> [String] {
+        let query = bookTable.select(distinct: bookType)
+        do {
+            let rows = try db.prepare(query)
+            return rows.compactMap { row in
+                return row[bookType]
+            }
+        } catch {
+            print("Failed to retrieve book categories: \(error)")
+            return []
+        }
+    }
+
+    func getBooksOrderedByType(category: String) -> [Book] {
+        let query = bookTable.filter(bookType == category).order(bookType.asc)
         do {
             let rows = try db.prepare(query)
             return rows.map { row in

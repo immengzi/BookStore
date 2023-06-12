@@ -13,6 +13,7 @@
 		182F2C1B2A337D7200950E5E /* BookActionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182F2C1A2A337D7200950E5E /* BookActionsTableViewCell.swift */; };
 		182F2C1D2A3725BE00950E5E /* BookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182F2C1C2A3725BE00950E5E /* BookViewController.swift */; };
 		182F2C202A372FD500950E5E /* TestDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182F2C1F2A372FD500950E5E /* TestDataManager.swift */; };
+		182F2C222A373FFA00950E5E /* CategoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182F2C212A373FFA00950E5E /* CategoryManager.swift */; };
 		18B49E1D2A2FAC8100DE8136 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B49E1C2A2FAC8100DE8136 /* AppDelegate.swift */; };
 		18B49E1F2A2FAC8100DE8136 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B49E1E2A2FAC8100DE8136 /* SceneDelegate.swift */; };
 		18B49E212A2FAC8100DE8136 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B49E202A2FAC8100DE8136 /* HomeViewController.swift */; };
@@ -37,6 +38,7 @@
 		182F2C1A2A337D7200950E5E /* BookActionsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookActionsTableViewCell.swift; sourceTree = "<group>"; };
 		182F2C1C2A3725BE00950E5E /* BookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookViewController.swift; sourceTree = "<group>"; };
 		182F2C1F2A372FD500950E5E /* TestDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDataManager.swift; sourceTree = "<group>"; };
+		182F2C212A373FFA00950E5E /* CategoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryManager.swift; sourceTree = "<group>"; };
 		1859059F2A3232CF00A8E408 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		18B49E192A2FAC8100DE8136 /* BookStore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BookStore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18B49E1C2A2FAC8100DE8136 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -135,6 +137,7 @@
 				18C501EF2A3134120034BCC2 /* AuthManager.swift */,
 				18031DFA2A322524003A248F /* UserManager.swift */,
 				182F2C1F2A372FD500950E5E /* TestDataManager.swift */,
+				182F2C212A373FFA00950E5E /* CategoryManager.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -301,6 +304,7 @@
 				18C501C82A30B2D40034BCC2 /* OrdersViewController.swift in Sources */,
 				18B49E212A2FAC8100DE8136 /* HomeViewController.swift in Sources */,
 				182F2C202A372FD500950E5E /* TestDataManager.swift in Sources */,
+				182F2C222A373FFA00950E5E /* CategoryManager.swift in Sources */,
 				18C501DD2A30CDB60034BCC2 /* Extensions.swift in Sources */,
 				18B49E1D2A2FAC8100DE8136 /* AppDelegate.swift in Sources */,
 				18C501C52A30B29E0034BCC2 /* ShoppingBoxViewController.swift in Sources */,
