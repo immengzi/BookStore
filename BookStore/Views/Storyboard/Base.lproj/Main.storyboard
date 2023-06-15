@@ -136,7 +136,7 @@
         <!--历史订单-->
         <scene sceneID="Y6d-C4-clS">
             <objects>
-                <viewController id="BsR-Qd-Amr" customClass="OrdersViewController" customModule="BookStore" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BsR-Qd-Amr" customClass="OrderViewController" customModule="BookStore" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="FWD-O9-B8y">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

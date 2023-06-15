@@ -395,7 +395,6 @@ class DataManager {
             
             if let result = try? db.pluck(query) {
                 let price = result[bookPrice]
-                print("\(book),'s price is \(price)")
                 if let quantity = book["number"] as? Double {
                     totalPrice += price * quantity
                 }

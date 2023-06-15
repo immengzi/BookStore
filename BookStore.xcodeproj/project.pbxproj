@@ -19,8 +19,9 @@
 		18B49E242A2FAC8100DE8136 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18B49E222A2FAC8100DE8136 /* Main.storyboard */; };
 		18B49E262A2FAC8400DE8136 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18B49E252A2FAC8400DE8136 /* Assets.xcassets */; };
 		18B49E292A2FAC8400DE8136 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18B49E272A2FAC8400DE8136 /* LaunchScreen.storyboard */; };
+		18C4AB5F2A3B994100CC1BFF /* OrderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C4AB5E2A3B994100CC1BFF /* OrderTableViewCell.swift */; };
 		18C501C52A30B29E0034BCC2 /* CartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C501C42A30B29E0034BCC2 /* CartViewController.swift */; };
-		18C501C82A30B2D40034BCC2 /* OrdersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C501C72A30B2D40034BCC2 /* OrdersViewController.swift */; };
+		18C501C82A30B2D40034BCC2 /* OrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C501C72A30B2D40034BCC2 /* OrderViewController.swift */; };
 		18C501CA2A30B2E30034BCC2 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C501C92A30B2E30034BCC2 /* AboutViewController.swift */; };
 		18C501CE2A30B4160034BCC2 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C501CD2A30B4160034BCC2 /* LoginViewController.swift */; };
 		18C501D02A30B43B0034BCC2 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C501CF2A30B43B0034BCC2 /* RegistrationViewController.swift */; };
@@ -46,8 +47,9 @@
 		18B49E252A2FAC8400DE8136 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		18B49E282A2FAC8400DE8136 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		18B49E2A2A2FAC8400DE8136 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		18C4AB5E2A3B994100CC1BFF /* OrderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderTableViewCell.swift; sourceTree = "<group>"; };
 		18C501C42A30B29E0034BCC2 /* CartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewController.swift; sourceTree = "<group>"; };
-		18C501C72A30B2D40034BCC2 /* OrdersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdersViewController.swift; sourceTree = "<group>"; };
+		18C501C72A30B2D40034BCC2 /* OrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewController.swift; sourceTree = "<group>"; };
 		18C501C92A30B2E30034BCC2 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		18C501CD2A30B4160034BCC2 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		18C501CF2A30B43B0034BCC2 /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
@@ -76,6 +78,7 @@
 			children = (
 				182F2C172A337AA500950E5E /* BookTableViewCell.swift */,
 				182F2C1A2A337D7200950E5E /* CartTableViewCell.swift */,
+				18C4AB5E2A3B994100CC1BFF /* OrderTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -147,7 +150,7 @@
 			children = (
 				18B49E202A2FAC8100DE8136 /* HomeViewController.swift */,
 				18C501C42A30B29E0034BCC2 /* CartViewController.swift */,
-				18C501C72A30B2D40034BCC2 /* OrdersViewController.swift */,
+				18C501C72A30B2D40034BCC2 /* OrderViewController.swift */,
 				18C501C92A30B2E30034BCC2 /* AboutViewController.swift */,
 			);
 			path = "Core Tabs";
@@ -264,9 +267,10 @@
 				182F2C1B2A337D7200950E5E /* CartTableViewCell.swift in Sources */,
 				18031DFB2A322524003A248F /* UserManager.swift in Sources */,
 				18C501D02A30B43B0034BCC2 /* RegistrationViewController.swift in Sources */,
+				18C4AB5F2A3B994100CC1BFF /* OrderTableViewCell.swift in Sources */,
 				18C501D22A30B47A0034BCC2 /* BookdetailViewController.swift in Sources */,
 				182F2C182A337AA500950E5E /* BookTableViewCell.swift in Sources */,
-				18C501C82A30B2D40034BCC2 /* OrdersViewController.swift in Sources */,
+				18C501C82A30B2D40034BCC2 /* OrderViewController.swift in Sources */,
 				18B49E212A2FAC8100DE8136 /* HomeViewController.swift in Sources */,
 				182F2C202A372FD500950E5E /* TestDataManager.swift in Sources */,
 				182F2C222A373FFA00950E5E /* CategoryManager.swift in Sources */,
