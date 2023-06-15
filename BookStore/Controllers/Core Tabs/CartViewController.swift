@@ -2,8 +2,7 @@ import UIKit
 
 class CartViewController: UIViewController {
     
-//    var username: String = ""
-    private var cartItems: [Book] = [] // 修改为 [Book]
+    private var cartItems: [CartItem] = [] // 修改为 [CartItem]
     
     private let tableView: UITableView = {
         let tableView = UITableView()
@@ -24,14 +23,8 @@ class CartViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        do {
-            let cartItemsData = try DataManager.shared.getCartItems(forUsername: UserManager.shared.currentUser!.username)
-            cartItems = cartItemsData.map { $0.book }
-            tableView.reloadData()
-        } catch {
-            print("Error retrieving cart items: \(error)")
-        }
+        cartItems = try DataManager.shared.getCartItems(forUsername: UserManager.shared.currentUser!.username)
+        tableView.reloadData()
     }
 }
 
@@ -42,9 +35,9 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: CartTableViewCell.identifier, for: indexPath) as! CartTableViewCell
-        let book = cartItems[indexPath.row]
+        let cartItem = cartItems[indexPath.row]
         
-        cell.configure(with: book)
+        cell.configure(with: cartItem)
         
         return cell
     }

@@ -123,29 +123,28 @@ final class CartTableViewCell: UITableViewCell {
         ])
     }
     
-    public func configure(with book: Book) {
+    public func configure(with cartItem: CartItem) {
         // 使用给定的图书信息配置单元格的内容
-        self.book = book
-        coverImageView.image = UIImage(named: book.coverImage)
-        nameLabel.text = book.name
-        priceLabel.text = "\(book.price)" + " " + "CNY"
+        self.book = cartItem.book
+        quantity = cartItem.number
+        coverImageView.image = UIImage(named: book!.coverImage)
+        nameLabel.text = book?.name
+        priceLabel.text = "\(book?.price)" + " " + "CNY"
         
         // 计算单元格的高度
         let textHeight = nameLabel.sizeThatFits(CGSize(width: nameLabel.frame.width, height: CGFloat.greatestFiniteMagnitude)).height
         let totalHeight = textHeight + 16 + 8 + 8 + 30 // nameLabel的高度 + 上下间距 + priceLabel的上间距 + quantityLabel的上间距 + selectCheckBox的高度
         CartTableViewCell.cellHeight = max(totalHeight, CartTableViewCell.cellHeight)
         
-        // Set initial quantity
-        quantity = 0
         updateQuantityLabel()
         
         selectCheckBox.addTarget(self, action: #selector(selectCheckBoxTapped), for: .touchUpInside)
     }
-    
+
     @objc private func selectCheckBoxTapped() {
         selectCheckBox.isSelected = !selectCheckBox.isSelected
     }
-    
+
     private func updateQuantityLabel() {
         guard let book = book else { return }
         

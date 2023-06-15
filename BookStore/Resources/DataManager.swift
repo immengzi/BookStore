@@ -320,7 +320,7 @@ class DataManager {
                     isbn: row[bookIsbn],
                     coverImage: row[bookCoverImage]
                 )
-                let number = row[cartBookNumber] // 修改此处，从 cartBookNumber 获取数量
+                let number = row[cartBookNumber]
                 return CartItem(book: book, number: number)
             }
         } catch {
@@ -330,9 +330,21 @@ class DataManager {
     }
 
     func addCartItem(bookIsbn: Int, username: String, number: Int) -> Bool {
-        let insert = cartTable.insert(or: .replace, cartBookIsbn <- bookIsbn, cartUserName <- username, cartBookNumber <- number)
+        let query = cartTable.filter(cartBookIsbn == bookIsbn && cartUserName == username)
+
         do {
-            try db.run(insert)
+            if let existingCartItem = try db.pluck(query) {
+                // 记录已存在，执行更新操作
+                let existingNumber = existingCartItem[cartBookNumber]
+                let newNumber = existingNumber + number
+                let update = query.update(cartBookNumber <- newNumber)
+                try db.run(update)
+            } else {
+                // 记录不存在，执行插入操作
+                let insert = cartTable.insert(cartBookIsbn <- bookIsbn, cartUserName <- username, cartBookNumber <- number)
+                try db.run(insert)
+            }
+
             print("Cart item added successfully")
             return true
         } catch {
