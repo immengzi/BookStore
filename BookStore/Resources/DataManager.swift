@@ -320,7 +320,7 @@ class DataManager {
                     isbn: row[bookIsbn],
                     coverImage: row[bookCoverImage]
                 )
-                let number = row[cartId]
+                let number = row[cartBookNumber] // 修改此处，从 cartBookNumber 获取数量
                 return CartItem(book: book, number: number)
             }
         } catch {

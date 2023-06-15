@@ -2,7 +2,7 @@ import UIKit
 
 class CartViewController: UIViewController {
     
-    var username: String = ""
+//    var username: String = ""
     private var cartItems: [Book] = [] // 修改为 [Book]
     
     private let tableView: UITableView = {
@@ -17,14 +17,21 @@ class CartViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-        let cartItemsData = DataManager.shared.getCartItems(forUsername: username) // 获取购物车图书项数组
-        
-        // 转换 [CartItem] 为 [Book]
-        cartItems = cartItemsData.map { $0.book }
-        
         // 添加tableView到视图层次结构中
         view.addSubview(tableView)
         tableView.frame = view.bounds
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        do {
+            let cartItemsData = try DataManager.shared.getCartItems(forUsername: UserManager.shared.currentUser!.username)
+            cartItems = cartItemsData.map { $0.book }
+            tableView.reloadData()
+        } catch {
+            print("Error retrieving cart items: \(error)")
+        }
     }
 }
 
