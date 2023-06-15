@@ -68,14 +68,30 @@ class CartViewController: UIViewController {
     }
     
     private func addSelectedBooksToOrder() {
+        var selectedBooks: [Book] = []
+        
         // 遍历所有的单元格
         for cell in tableView.visibleCells {
             guard let cartCell = cell as? CartTableViewCell else { continue }
             
             if cartCell.selectCheckBox.isSelected {
-                // 将书本添加到订单中的逻辑
-                // ...
+                let book = cartCell.book // 假设 CartTableViewCell 中有表示书本的属性 book
+                selectedBooks.append(book!)
             }
+        }
+        
+        if selectedBooks.isEmpty {
+            let alertController = UIAlertController(title: "提示", message: "您还未选择书籍", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "好的", style: .default, handler: nil))
+            present(alertController, animated: true, completion: nil)
+        } else {
+            // 将选中的书籍添加到订单中的逻辑
+            // 可以在这里使用 selectedBooks 数组进行处理，比如保存到订单数据模型中或执行其他操作
+            // ...
+            
+            let alertController = UIAlertController(title: "成功", message: "书籍已添加到订单", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "好的", style: .default, handler: nil))
+            present(alertController, animated: true, completion: nil)
         }
     }
 }

@@ -18,7 +18,7 @@ class HomeViewController: UIViewController {
         categorySegmentedControl.selectedSegmentIndex = 0 // 默认选中第一个分类
         return categorySegmentedControl
     }()
-   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
@@ -26,12 +26,12 @@ class HomeViewController: UIViewController {
         // 在视图控制器加载时插入测试数据
         TestDataManager.shared.insertTestData()
         view.addSubview(categorySegmentedControl)
-            categorySegmentedControl.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                categorySegmentedControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-                categorySegmentedControl.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-                categorySegmentedControl.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
-            ])
+        categorySegmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            categorySegmentedControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            categorySegmentedControl.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            categorySegmentedControl.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
+        ])
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -40,7 +40,7 @@ class HomeViewController: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-
+        
     }
     
     override func viewDidLayoutSubviews() {
@@ -84,19 +84,31 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         let books = DataManager.shared.getBooksOrderedByType(category: selectedCategory)
         return books.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
+        
         let books = DataManager.shared.getBooksOrderedByType(category: selectedCategory)
-            guard indexPath.row < books.count else {
-                return UITableViewCell()
+        guard indexPath.row < books.count else {
+            return UITableViewCell()
+        }
+        let book = books[indexPath.row]
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: BookTableViewCell.identifier, for: indexPath) as! BookTableViewCell
+        // 使用图书信息更新单元格
+        cell.configure(with: book)
+        
+        cell.addToCartButtonTappedHandler = {
+            if cell.number == 0 {
+                let alertController = UIAlertController(title: "提示", message: "您选择图书的数量为0", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "好的", style: .default, handler: nil))
+                self.present(alertController, animated: true, completion: nil)
+            } else {
+                let alertController = UIAlertController(title: "成功", message: "图书已添加到购物车", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "好的", style: .default, handler: nil))
+                self.present(alertController, animated: true, completion: nil)
             }
-            let book = books[indexPath.row]
-            
-            let cell = tableView.dequeueReusableCell(withIdentifier: BookTableViewCell.identifier, for: indexPath) as! BookTableViewCell
-            // 使用图书信息更新单元格
-            cell.configure(with: book)
-
-            return cell
+        }
+        
+        return cell
     }
 }

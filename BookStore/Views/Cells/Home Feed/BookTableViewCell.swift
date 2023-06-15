@@ -3,9 +3,11 @@ import UIKit
 final class BookTableViewCell: UITableViewCell {
     static let identifier = "BookTableViewCell"
     
+    var addToCartButtonTappedHandler: (() -> Void)?
+    
     private let cellWidth: CGFloat = UIScreen.main.bounds.width - 32 // 屏幕宽度减去左右边距
     static var cellHeight: CGFloat = 100 // 设置一个默认的单元格高度
-    private var number: Int = 0
+    public var number: Int = 0
     
     private var book: Book?
     
@@ -61,7 +63,7 @@ final class BookTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        // 添加子视图到单元格的内容视图
+        
         contentView.addSubview(containerView)
         containerView.addSubview(coverImageView)
         containerView.addSubview(nameLabel)
@@ -124,17 +126,15 @@ final class BookTableViewCell: UITableViewCell {
     
     public func configure(with book: Book) {
         self.book = book
-        // 使用给定的图书信息配置单元格的内容
+        
         coverImageView.image = UIImage(named: book.coverImage)
         nameLabel.text = book.name
         priceLabel.text = "\(book.price)"+" "+"CNY"
         
-        // 计算单元格的高度
         let textHeight = nameLabel.sizeThatFits(CGSize(width: nameLabel.frame.width, height: CGFloat.greatestFiniteMagnitude)).height
         let totalHeight = textHeight + 16 + 8 + 30 // nameLabel的高度 + 上下间距 + priceLabel的上间距 + quantityControl的高度
         BookTableViewCell.cellHeight = max(totalHeight, BookTableViewCell.cellHeight)
         
-        // Set initial quantity
         number = 0
         updateNumberLabel()
         
@@ -152,6 +152,7 @@ final class BookTableViewCell: UITableViewCell {
             return // 如果book为nil，则无法执行添加到购物车的操作
         }
         DataManager.shared.addCartItem(bookIsbn: book.isbn, username: UserManager.shared.currentUser!.username, number: number)
+        addToCartButtonTappedHandler?()
     }
     
     private func updateNumberLabel() {

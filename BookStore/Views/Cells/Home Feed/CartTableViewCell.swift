@@ -7,7 +7,7 @@ final class CartTableViewCell: UITableViewCell {
     static var cellHeight: CGFloat = 100 // 设置一个默认的单元格高度
     private var quantity: Int = 0
     
-    private var book: Book?
+    public var book: Book?
     
     private let containerView: UIView = {
         let view = UIView()
