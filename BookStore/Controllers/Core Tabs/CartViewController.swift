@@ -36,10 +36,10 @@ class CartViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         tableView.delegate = self
         tableView.dataSource = self
-
+        
         view.addSubview(tableView)
         tableView.frame = view.bounds
         
@@ -47,7 +47,7 @@ class CartViewController: UIViewController {
         setupConstraints()
         view.bringSubviewToFront(payButton)
     }
-
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -57,7 +57,7 @@ class CartViewController: UIViewController {
     
     
     @objc private func payButtonTapped() {
-        let alertController = UIAlertController(title: "确认支付", message: "是否要将所选书本添加到订单中？", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "确认支付", message: "您确定要购买这些图书吗？", preferredStyle: .alert)
         
         alertController.addAction(UIAlertAction(title: "确认", style: .default, handler: { _ in
             self.addSelectedBooksToOrder()
@@ -68,30 +68,42 @@ class CartViewController: UIViewController {
     }
     
     private func addSelectedBooksToOrder() {
-        var selectedBooks: [Book] = []
+        var selectedBooks: [[String: Any]] = []
         
-        // 遍历所有的单元格
         for cell in tableView.visibleCells {
             guard let cartCell = cell as? CartTableViewCell else { continue }
             
             if cartCell.selectCheckBox.isSelected {
-                let book = cartCell.book // 假设 CartTableViewCell 中有表示书本的属性 book
-                selectedBooks.append(book!)
+                let bookInfo: [String: Any] = [
+                    "isbn": cartCell.book!.isbn,
+                    "number": cartCell.quantity
+                ]
+                selectedBooks.append(bookInfo)
             }
         }
-        
         if selectedBooks.isEmpty {
-            let alertController = UIAlertController(title: "提示", message: "您还未选择书籍", preferredStyle: .alert)
+            let alertController = UIAlertController(title: "提示", message: "您还未选择图书", preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: "好的", style: .default, handler: nil))
             present(alertController, animated: true, completion: nil)
         } else {
-            // 将选中的书籍添加到订单中的逻辑
-            // 可以在这里使用 selectedBooks 数组进行处理，比如保存到订单数据模型中或执行其他操作
-            // ...
+            // 序列化选中的图书
+            guard let jsonData = try? JSONSerialization.data(withJSONObject: selectedBooks, options: []),
+                  let bookJSON = String(data: jsonData, encoding: .utf8) else {
+                print("Failed to serialize selected books")
+                return
+            }
+            let success = DataManager.shared.addOrderItem(username: UserManager.shared.currentUser!.username, bookJSON: bookJSON)
             
-            let alertController = UIAlertController(title: "成功", message: "书籍已添加到订单", preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "好的", style: .default, handler: nil))
-            present(alertController, animated: true, completion: nil)
+            if success {
+                let alertController = UIAlertController(title: "成功", message: "您已成功购买刚才选择的图书", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "好的", style: .default, handler: nil))
+                present(alertController, animated: true, completion: nil)
+                print(bookJSON)
+            } else {
+                let alertController = UIAlertController(title: "错误", message: "无法下订单", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "好的", style: .default, handler: nil))
+                present(alertController, animated: true, completion: nil)
+            }
         }
     }
 }

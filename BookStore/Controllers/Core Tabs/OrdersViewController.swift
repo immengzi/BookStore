@@ -1,19 +1,14 @@
-//
-//  OrdersViewController.swift
-//  exercise_tabBar
-//
-//  Created by Apple on 2023/6/7.
-//
-
 import UIKit
 
 class OrdersViewController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        let username = UserManager.shared.currentUser?.username
+        let orders = DataManager.shared.getOrders(forUsername: username!)
+        print(orders)
     }
     
-
+    
 }

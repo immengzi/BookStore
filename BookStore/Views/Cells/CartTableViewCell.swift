@@ -5,7 +5,7 @@ final class CartTableViewCell: UITableViewCell {
     
     private let cellWidth: CGFloat = UIScreen.main.bounds.width - 32 // 屏幕宽度减去左右边距
     static var cellHeight: CGFloat = 100 // 设置一个默认的单元格高度
-    private var quantity: Int = 0
+    public var quantity: Int = 0
     
     public var book: Book?
     
@@ -37,9 +37,8 @@ final class CartTableViewCell: UITableViewCell {
         return label
     }()
     
-    private let quantityLabel: UILabel = {
+    public let quantityLabel: UILabel = {
         let label = UILabel()
-//        label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 14)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -144,11 +143,11 @@ final class CartTableViewCell: UITableViewCell {
         
         selectCheckBox.addTarget(self, action: #selector(selectCheckBoxTapped), for: .touchUpInside)
     }
-
+    
     @objc private func selectCheckBoxTapped() {
         selectCheckBox.isSelected = !selectCheckBox.isSelected
     }
-
+    
     private func updateQuantityLabel() {
         guard let book = book else { return }
         

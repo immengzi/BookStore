@@ -11,7 +11,6 @@
 		181527E72A323EDA002DAC19 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 181527E62A323EDA002DAC19 /* SQLite */; };
 		182F2C182A337AA500950E5E /* BookTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182F2C172A337AA500950E5E /* BookTableViewCell.swift */; };
 		182F2C1B2A337D7200950E5E /* CartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182F2C1A2A337D7200950E5E /* CartTableViewCell.swift */; };
-		182F2C1D2A3725BE00950E5E /* BookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182F2C1C2A3725BE00950E5E /* BookViewController.swift */; };
 		182F2C202A372FD500950E5E /* TestDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182F2C1F2A372FD500950E5E /* TestDataManager.swift */; };
 		182F2C222A373FFA00950E5E /* CategoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182F2C212A373FFA00950E5E /* CategoryManager.swift */; };
 		18B49E1D2A2FAC8100DE8136 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B49E1C2A2FAC8100DE8136 /* AppDelegate.swift */; };
@@ -36,7 +35,6 @@
 		18031DFA2A322524003A248F /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		182F2C172A337AA500950E5E /* BookTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTableViewCell.swift; sourceTree = "<group>"; };
 		182F2C1A2A337D7200950E5E /* CartTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartTableViewCell.swift; sourceTree = "<group>"; };
-		182F2C1C2A3725BE00950E5E /* BookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookViewController.swift; sourceTree = "<group>"; };
 		182F2C1F2A372FD500950E5E /* TestDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDataManager.swift; sourceTree = "<group>"; };
 		182F2C212A373FFA00950E5E /* CategoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryManager.swift; sourceTree = "<group>"; };
 		1859059F2A3232CF00A8E408 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
@@ -76,26 +74,10 @@
 		182F2C162A337A7100950E5E /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				182F2C192A337D1500950E5E /* Home Feed */,
-			);
-			path = Cells;
-			sourceTree = "<group>";
-		};
-		182F2C192A337D1500950E5E /* Home Feed */ = {
-			isa = PBXGroup;
-			children = (
 				182F2C172A337AA500950E5E /* BookTableViewCell.swift */,
 				182F2C1A2A337D7200950E5E /* CartTableViewCell.swift */,
 			);
-			path = "Home Feed";
-			sourceTree = "<group>";
-		};
-		182F2C1E2A3726B200950E5E /* General */ = {
-			isa = PBXGroup;
-			children = (
-				182F2C1C2A3725BE00950E5E /* BookViewController.swift */,
-			);
-			path = General;
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		18B49E102A2FAC8100DE8136 = {
@@ -119,7 +101,6 @@
 			isa = PBXGroup;
 			children = (
 				18C501BE2A30B07A0034BCC2 /* Resources */,
-				18C501BF2A30B0870034BCC2 /* Models */,
 				18C501C02A30B08F0034BCC2 /* Views */,
 				18C501C12A30B0970034BCC2 /* Controllers */,
 				18B49E2A2A2FAC8400DE8136 /* Info.plist */,
@@ -140,13 +121,6 @@
 				182F2C212A373FFA00950E5E /* CategoryManager.swift */,
 			);
 			path = Resources;
-			sourceTree = "<group>";
-		};
-		18C501BF2A30B0870034BCC2 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 		18C501C02A30B08F0034BCC2 /* Views */ = {
@@ -191,20 +165,11 @@
 		18C501CB2A30B3E70034BCC2 /* Other */ = {
 			isa = PBXGroup;
 			children = (
-				18C501CC2A30B3F50034BCC2 /* Onboarding */,
-				182F2C1E2A3726B200950E5E /* General */,
-			);
-			path = Other;
-			sourceTree = "<group>";
-		};
-		18C501CC2A30B3F50034BCC2 /* Onboarding */ = {
-			isa = PBXGroup;
-			children = (
 				18C501CD2A30B4160034BCC2 /* LoginViewController.swift */,
 				18C501CF2A30B43B0034BCC2 /* RegistrationViewController.swift */,
 				18C501D12A30B47A0034BCC2 /* BookdetailViewController.swift */,
 			);
-			path = Onboarding;
+			path = Other;
 			sourceTree = "<group>";
 		};
 		18C501D72A30BBBA0034BCC2 /* Frameworks */ = {
@@ -308,7 +273,6 @@
 				18C501DD2A30CDB60034BCC2 /* Extensions.swift in Sources */,
 				18B49E1D2A2FAC8100DE8136 /* AppDelegate.swift in Sources */,
 				18C501C52A30B29E0034BCC2 /* CartViewController.swift in Sources */,
-				182F2C1D2A3725BE00950E5E /* BookViewController.swift in Sources */,
 				18C501EE2A312F4F0034BCC2 /* DataManager.swift in Sources */,
 				18B49E1F2A2FAC8100DE8136 /* SceneDelegate.swift in Sources */,
 			);

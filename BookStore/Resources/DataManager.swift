@@ -4,18 +4,18 @@ import Foundation
 
 class DataManager {
     static let shared = DataManager()
-
+    
     /// DataBase
     private let dbFileName = "Bookstore.sqlite"
     private var db: Connection!
-
+    
     /// User
     private let userTableName = "user"
     private let userTable: Table
     private let userId = Expression<Int>("id")
     private let username = Expression<String>("username")
     private let password = Expression<String>("password")
-
+    
     /// Book
     private let bookTableName = "book"
     private let bookTable: Table
@@ -27,7 +27,7 @@ class DataManager {
     private let bookDescription = Expression<String>("description")
     private let bookCoverImage = Expression<String>("coverImage")
     private let bookIsbn = Expression<Int>("isbn")
-
+    
     /// Cart
     private let cartTableName = "cart"
     private let cartTable: Table
@@ -35,7 +35,7 @@ class DataManager {
     private let cartBookIsbn = Expression<Int>("book_isbn")
     private let cartBookNumber = Expression<Int>("number")
     private let cartUserName = Expression<String>("user_name")
-
+    
     /// Order
     private let orderTableName = "order"
     private let orderTable: Table
@@ -44,9 +44,9 @@ class DataManager {
     private let orderPrice = Expression<Double>("price")
     private let orderItemJSON = Expression<String>("item_json")
     private let orderCreateTime = Expression<Date>("create_time")
-
+    
     // MARK: - Public API
-
+    
     private init() {
         /// DataBase Init
         let fileURL = try! FileManager.default
@@ -54,28 +54,28 @@ class DataManager {
                  appropriateFor: nil, create: false)
             .appendingPathComponent(dbFileName)
         db = try! Connection(fileURL.path)
-
+        
         /// User Init
         userTable = Table(userTableName)
-
+        
         /// Book Init
         bookTable = Table(bookTableName)
-
+        
         /// Cart Init
         cartTable = Table(cartTableName)
-
+        
         /// Order
         orderTable = Table(orderTableName)
-
+        
         createTable()
         
-//        resetDatabase()
+        //        resetDatabase()
     }
-
+    
     func resetDatabase() {
         // 断开数据库连接
         db = nil
-
+        
         // 删除数据库文件
         let fileURL = try! FileManager.default
             .url(for: .documentDirectory, in: .userDomainMask,
@@ -87,13 +87,13 @@ class DataManager {
         } catch {
             print("数据库文件删除失败: \(error)")
         }
-
+        
         // 重新打开数据库连接
         db = try! Connection(fileURL.path)
     }
     
     // MARK: - Private Methods
-
+    
     private func createTable() {
         /// User
         do {
@@ -151,7 +151,7 @@ class DataManager {
             print("Order建表失败: \(error)")
         }
     }
-
+    
     func isUsernameAvailable(username: String) -> Bool {
         let query = userTable.filter(self.username == username)
         do {
@@ -162,7 +162,7 @@ class DataManager {
             return false
         }
     }
-
+    
     func createUser(username: String, password: String) -> User? {
         let insert = userTable.insert(self.username <- username, self.password <- password)
         do {
@@ -174,7 +174,7 @@ class DataManager {
             return nil
         }
     }
-
+    
     func getUser(username: String, password: String) -> User? {
         let query = userTable.filter(self.username == username && self.password == password)
         do {
@@ -227,7 +227,7 @@ class DataManager {
             return []
         }
     }
-
+    
     func getBooksOrderedByType(category: String) -> [Book] {
         let query = bookTable.filter(bookType == category).order(bookType.asc)
         do {
@@ -248,7 +248,7 @@ class DataManager {
             return []
         }
     }
-
+    
     func getBooksOrderedByName(ofType type: String) -> [Book] {
         let query = bookTable.filter(bookType == type).order(bookName.asc)
         do {
@@ -269,7 +269,7 @@ class DataManager {
             return []
         }
     }
-
+    
     func searchBooksByName(query: String) -> [Book] {
         let searchQuery = "%" + query + "%"
         let query = bookTable.filter(bookName.like(searchQuery, escape: "\\")).order(bookName.asc)
@@ -291,7 +291,7 @@ class DataManager {
             return []
         }
     }
-
+    
     func deleteBook(withId id: Int) -> Bool {
         let query = bookTable.filter(bookId == id)
         let delete = query.delete()
@@ -304,10 +304,10 @@ class DataManager {
             return false
         }
     }
-
+    
     func getCartItems(forUsername username: String) -> [CartItem] {
         let query = cartTable.join(bookTable, on: cartBookIsbn == bookIsbn)
-                               .filter(cartUserName == username)
+            .filter(cartUserName == username)
         do {
             let rows = try db.prepare(query)
             return rows.map { row in
@@ -328,10 +328,10 @@ class DataManager {
             return []
         }
     }
-
+    
     func addCartItem(bookIsbn: Int, username: String, number: Int) -> Bool {
         let query = cartTable.filter(cartBookIsbn == bookIsbn && cartUserName == username)
-
+        
         do {
             if let existingCartItem = try db.pluck(query) {
                 // 记录已存在，执行更新操作
@@ -344,7 +344,7 @@ class DataManager {
                 let insert = cartTable.insert(cartBookIsbn <- bookIsbn, cartUserName <- username, cartBookNumber <- number)
                 try db.run(insert)
             }
-
+            
             print("Cart item added successfully")
             return true
         } catch {
@@ -352,7 +352,7 @@ class DataManager {
             return false
         }
     }
-
+    
     func removeCartItem(bookIsbn: Int, username: String) -> Bool {
         let query = cartTable.filter(cartBookIsbn == bookIsbn && cartUserName == username)
         let delete = query.delete()
@@ -365,7 +365,7 @@ class DataManager {
             return false
         }
     }
-
+    
     func clearCartItems(forUsername username: String) -> Bool {
         let query = cartTable.filter(cartUserName == username)
         let delete = query.delete()
@@ -378,41 +378,61 @@ class DataManager {
             return false
         }
     }
-
-    func placeOrder(username: String, price: Double, itemJSON: String) -> Bool {
-        let insert = orderTable.insert(orderUserName <- username, orderPrice <- price, orderItemJSON <- itemJSON, orderCreateTime <- Date())
+    
+    func addOrderItem(username: String, bookJSON: String) -> Bool {
+        guard let jsonData = bookJSON.data(using: .utf8),
+              let selectedBooks = try? JSONSerialization.jsonObject(with: jsonData, options: []) as? [[String: Any]] else {
+            print("Failed to deserialize selected books")
+            return false
+        }
+        var totalPrice = 0.0
+        for book in selectedBooks {
+            print("print book")
+            guard let isbn = book["isbn"] as? Int else {
+                continue
+            }
+            let query = bookTable.filter(bookIsbn == isbn)
+            
+            if let result = try? db.pluck(query) {
+                let price = result[bookPrice]
+                print("\(book),'s price is \(price)")
+                if let quantity = book["number"] as? Double {
+                    totalPrice += price * quantity
+                }
+            }
+        }
+        let insert = orderTable.insert(orderUserName <- username, orderPrice <- totalPrice, orderItemJSON <- bookJSON, orderCreateTime <- Date())
         do {
             try db.run(insert)
-            print("Order placed successfully")
+            print("Order placed successfully, and the orderPrice is \(totalPrice)")
             return true
         } catch {
             print("Failed to place order: \(error)")
             return false
         }
     }
-
+    
     func getOrders(forUsername username: String) -> [OrderItem] {
-        let query = orderTable.filter(orderUserName == username).order(orderCreateTime.desc)
+        var orders: [OrderItem] = []
+        
+        let query = orderTable.filter(orderUserName == username)
+        
         do {
-            let rows = try db.prepare(query)
-            return rows.map { row in
-                let book = Book(
-                    name: row[bookName],
-                    price: row[bookPrice],
-                    type: row[bookType],
-                    author: row[bookAuthor],
-                    description: row[bookDescription],
-                    isbn: row[bookIsbn],
-                    coverImage: row[bookCoverImage]
-                )
-                let number = row[cartId]
+            for row in try db.prepare(query) {
+                let orderId = row[orderId]
+                let username = row[orderUserName]
                 let price = row[orderPrice]
-                return OrderItem(book: book, number: number, price: price)
+                let itemJSON = row[orderItemJSON]
+                let createTime = row[orderCreateTime]
+                
+                let order = OrderItem(username: username, price: Int(price), itemJSON: itemJSON, createTime: createTime)
+                orders.append(order)
             }
         } catch {
-            print("Failed to retrieve orders: \(error)")
-            return []
+            print("Failed to fetch orders for username \(username): \(error)")
         }
+        
+        return orders
     }
 }
 
@@ -437,7 +457,8 @@ struct CartItem {
 }
 
 struct OrderItem {
-    let book: Book
-    let number: Int
-    let price: Double
+    let username: String
+    let price: Int
+    let itemJSON: String
+    let createTime: Date
 }
