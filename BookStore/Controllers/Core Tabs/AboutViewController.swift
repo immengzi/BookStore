@@ -1,10 +1,3 @@
-//
-//  AboutViewController.swift
-//  exercise_tabBar
-//
-//  Created by Apple on 2023/6/7.
-//
-
 import UIKit
 
 class AboutViewController: UIViewController {
@@ -70,7 +63,7 @@ class AboutViewController: UIViewController {
         NSLayoutConstraint.activate([
             logOutButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25),
             logOutButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
-            logOutButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -80),
+            logOutButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -15),
             logOutButton.heightAnchor.constraint(equalToConstant: 52.0)
         ])
     }

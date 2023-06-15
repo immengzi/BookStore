@@ -7,7 +7,7 @@ final class CartTableViewCell: UITableViewCell {
     static var cellHeight: CGFloat = 100 // 设置一个默认的单元格高度
     private var quantity: Int = 0
     
-    private var book: Book? // 添加一个Book属性来存储图书信息
+    private var book: Book?
     
     private let containerView: UIView = {
         let view = UIView()
@@ -39,7 +39,7 @@ final class CartTableViewCell: UITableViewCell {
     
     private let quantityLabel: UILabel = {
         let label = UILabel()
-        label.textAlignment = .center
+//        label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 14)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -52,7 +52,7 @@ final class CartTableViewCell: UITableViewCell {
         return label
     }()
     
-    private let selectCheckBox: UIButton = {
+    public let selectCheckBox: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "checkmark.circle"), for: .selected)
         button.setImage(UIImage(systemName: "circle"), for: .normal)
@@ -108,7 +108,7 @@ final class CartTableViewCell: UITableViewCell {
             priceLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -margin),
             priceLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
             
-            quantityLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
+            quantityLabel.leadingAnchor.constraint(equalTo: coverImageView.trailingAnchor, constant: margin),
             quantityLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -margin),
             quantityLabel.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 8),
             
@@ -129,7 +129,11 @@ final class CartTableViewCell: UITableViewCell {
         quantity = cartItem.number
         coverImageView.image = UIImage(named: book!.coverImage)
         nameLabel.text = book?.name
-        priceLabel.text = "\(book?.price)" + " " + "CNY"
+        if let price = book?.price {
+            priceLabel.text = "\(price)" + " " + "CNY"
+        } else {
+            priceLabel.text = "N/A"
+        }
         
         // 计算单元格的高度
         let textHeight = nameLabel.sizeThatFits(CGSize(width: nameLabel.frame.width, height: CGFloat.greatestFiniteMagnitude)).height
