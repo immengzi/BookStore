@@ -155,4 +155,21 @@ final class CartTableViewCell: UITableViewCell {
         let totalPrice = book.price * Double(quantity)
         totalPriceLabel.text = "总价: " + "\(totalPrice)" + " CNY"
     }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(_:)))
+        swipeGesture.direction = .left
+        addGestureRecognizer(swipeGesture)
+    }
+    
+    @objc private func handleSwipe(_ gestureRecognizer: UISwipeGestureRecognizer) {
+        if gestureRecognizer.state == .ended {
+            // 发送删除信号给CartViewController
+            if let tableView = superview as? UITableView, let indexPath = tableView.indexPath(for: self) {
+                tableView.delegate?.tableView?(tableView, trailingSwipeActionsConfigurationForRowAt: indexPath)
+            }
+        }
+    }
 }

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		18031DFB2A322524003A248F /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18031DFA2A322524003A248F /* UserManager.swift */; };
+		18060F352A3C7C48009476B5 /* OrderDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18060F342A3C7C48009476B5 /* OrderDetailViewController.swift */; };
 		181527E72A323EDA002DAC19 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 181527E62A323EDA002DAC19 /* SQLite */; };
 		182F2C182A337AA500950E5E /* BookTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182F2C172A337AA500950E5E /* BookTableViewCell.swift */; };
 		182F2C1B2A337D7200950E5E /* CartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182F2C1A2A337D7200950E5E /* CartTableViewCell.swift */; };
@@ -34,6 +35,7 @@
 
 /* Begin PBXFileReference section */
 		18031DFA2A322524003A248F /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
+		18060F342A3C7C48009476B5 /* OrderDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailViewController.swift; sourceTree = "<group>"; };
 		182F2C172A337AA500950E5E /* BookTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTableViewCell.swift; sourceTree = "<group>"; };
 		182F2C1A2A337D7200950E5E /* CartTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartTableViewCell.swift; sourceTree = "<group>"; };
 		182F2C1F2A372FD500950E5E /* TestDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDataManager.swift; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 				18C501CD2A30B4160034BCC2 /* LoginViewController.swift */,
 				18C501CF2A30B43B0034BCC2 /* RegistrationViewController.swift */,
 				18C501D12A30B47A0034BCC2 /* BookdetailViewController.swift */,
+				18060F342A3C7C48009476B5 /* OrderDetailViewController.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -273,6 +276,7 @@
 				18C501C82A30B2D40034BCC2 /* OrderViewController.swift in Sources */,
 				18B49E212A2FAC8100DE8136 /* HomeViewController.swift in Sources */,
 				182F2C202A372FD500950E5E /* TestDataManager.swift in Sources */,
+				18060F352A3C7C48009476B5 /* OrderDetailViewController.swift in Sources */,
 				182F2C222A373FFA00950E5E /* CategoryManager.swift in Sources */,
 				18C501DD2A30CDB60034BCC2 /* Extensions.swift in Sources */,
 				18B49E1D2A2FAC8100DE8136 /* AppDelegate.swift in Sources */,

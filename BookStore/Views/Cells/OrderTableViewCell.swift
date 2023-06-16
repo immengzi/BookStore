@@ -91,6 +91,21 @@ final class OrderTableViewCell: UITableViewCell {
     public func configure(with orderItem: OrderItem) {
         orderIdLabel.text = "订单编号: \(orderItem.id)"
         totalPriceLabel.text = "总金额: \(orderItem.price) CNY"
+        
+        guard let jsonData = orderItem.itemJSON.data(using: .utf8),
+              let jsonObject = try? JSONSerialization.jsonObject(with: jsonData, options: []),
+              let items = jsonObject as? [[String: Any]] else {
+            print("Failed to parse JSON")
+            return
+        }
+        var totalSum = 0
+
+        for item in items {
+            if let number = item["number"] as? Int {
+                totalSum += number
+            }
+        }
+        totalNumberLabel.text = "总数量: \(totalSum)"
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let createTimeString = dateFormatter.string(from: orderItem.createTime)

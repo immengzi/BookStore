@@ -121,4 +121,22 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource {
         
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "删除") { [weak self] (action, view, completionHandler) in
+            self?.deleteCartItem(at: indexPath)
+            completionHandler(true)
+        }
+        
+        let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+        return configuration
+    }
+    
+    private func deleteCartItem(at indexPath: IndexPath) {
+        let cartItem = cartItems[indexPath.row]
+        let bookIsbn = cartItem.book.isbn
+        cartItems.remove(at: indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .automatic)
+        DataManager.shared.removeCartItem(bookIsbn: bookIsbn, username: UserManager.shared.currentUser!.username)
+    }
 }

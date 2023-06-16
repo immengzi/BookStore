@@ -41,4 +41,15 @@ extension OrderViewController: UITableViewDelegate, UITableViewDataSource {
         
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let orders = DataManager.shared.getOrders(forUsername: UserManager.shared.currentUser!.username)
+        guard indexPath.row < orders.count else {
+            return
+        }
+        let orderItem = orders[indexPath.row]
+        let orderDetailsVC = OrderDetailViewController()
+        orderDetailsVC.orderItem = orderItem
+        self.navigationController?.pushViewController(orderDetailsVC, animated: true)
+    }
 }

@@ -58,7 +58,7 @@ class HomeViewController: UIViewController {
     }
     
     private func handleNotAuthenticated() {
-        // check auth status
+        
         if UserManager.shared.currentUser == nil {
             let loginVC = LoginViewController()
             loginVC.modalPresentationStyle = .fullScreen
