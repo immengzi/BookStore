@@ -20,6 +20,12 @@ class OrderViewController: UIViewController {
         view.addSubview(tableView)
         tableView.frame = view.bounds
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        orderItems = DataManager.shared.getOrders(forUsername: UserManager.shared.currentUser!.username)
+        tableView.reloadData()
+    }
 }
 
 extension OrderViewController: UITableViewDelegate, UITableViewDataSource {

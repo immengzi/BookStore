@@ -67,15 +67,33 @@ final class OrderTableViewCell: UITableViewCell {
             containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -margin),
             containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: margin),
             containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -margin),
-            containerView.heightAnchor.constraint(equalToConstant: OrderTableViewCell.cellHeight)
+            containerView.heightAnchor.constraint(equalToConstant: OrderTableViewCell.cellHeight),
+            
+            orderIdLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: margin),
+            orderIdLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -margin),
+            orderIdLabel.topAnchor.constraint(equalTo: containerView.topAnchor),
+            
+            totalNumberLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: margin),
+            totalNumberLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -margin),
+            totalNumberLabel.topAnchor.constraint(equalTo: orderIdLabel.bottomAnchor, constant: 8),
+            
+            totalPriceLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: margin),
+            totalPriceLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -margin),
+            totalPriceLabel.topAnchor.constraint(equalTo: totalNumberLabel.bottomAnchor, constant: 8),
+            
+            createTimeLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: margin),
+            createTimeLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -margin),
+            createTimeLabel.topAnchor.constraint(equalTo: totalPriceLabel.bottomAnchor, constant: 8),
+            
         ])
     }
     
     public func configure(with orderItem: OrderItem) {
-//        let username = UserManager.shared.currentUser?.username
-//        let item_json = orderItem.itemJSON
-        totalPriceLabel.text = "\(orderItem.price)"
-        createTimeLabel.text = "\(orderItem.createTime)"
-        
+        orderIdLabel.text = "订单编号: \(orderItem.id)"
+        totalPriceLabel.text = "总金额: \(orderItem.price) CNY"
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let createTimeString = dateFormatter.string(from: orderItem.createTime)
+        createTimeLabel.text = "订单时间: \(createTimeString)"
     }
 }

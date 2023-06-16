@@ -424,7 +424,7 @@ class DataManager {
                 let itemJSON = row[orderItemJSON]
                 let createTime = row[orderCreateTime]
                 
-                let order = OrderItem(username: username, price: Int(price), itemJSON: itemJSON, createTime: createTime)
+                let order = OrderItem(id: orderId, username: username, price: Double(price), itemJSON: itemJSON, createTime: createTime)
                 orders.append(order)
             }
         } catch {
@@ -456,8 +456,9 @@ struct CartItem {
 }
 
 struct OrderItem {
+    let id: Int
     let username: String
-    let price: Int
+    let price: Double
     let itemJSON: String
     let createTime: Date
 }
