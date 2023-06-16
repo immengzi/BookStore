@@ -153,6 +153,8 @@ final class BookTableViewCell: UITableViewCell {
         }
         DataManager.shared.addCartItem(bookIsbn: book.isbn, username: UserManager.shared.currentUser!.username, number: number)
         addToCartButtonTappedHandler?()
+        number = 0
+        updateNumberLabel()
     }
     
     private func updateNumberLabel() {

@@ -75,10 +75,10 @@ class HomeViewController: UIViewController {
 }
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        // 返回图书的类别数量作为分区数
-        return 1
-    }
+//    func numberOfSections(in tableView: UITableView) -> Int {
+//        // 返回图书的类别数量作为分区数
+//        return 1
+//    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let books = DataManager.shared.getBooksOrderedByType(category: selectedCategory)
@@ -110,5 +110,16 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let books = DataManager.shared.getBooksOrderedByType(category: selectedCategory)
+        guard indexPath.row < books.count else {
+            return
+        }
+        let book = books[indexPath.row]
+        let bookDetailsVC = BookdetailViewController()
+        bookDetailsVC.book = book
+        self.navigationController?.pushViewController(bookDetailsVC, animated: true)
     }
 }
